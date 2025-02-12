@@ -1,0 +1,74 @@
+.add-user-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f6f9;
+  }
+  
+  .add-user-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+  }
+  
+  .add-user-card h3 {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .add-user-card input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .add-user-card button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .add-user-card button:hover {
+    background: #0056b3;
+  }
+  
+  /* ✅ Alert Styling */
+  .alert {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .alert-error {
+    background: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+  }
+  
+  .alert-success {
+    background: #e8f5e9;
+    color: #388e3c;
+    border: 1px solid #388e3c;
+  }
+  
+  /* ✅ Responsive Design */
+  @media (max-width: 480px) {
+    .add-user-card {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  }
+  

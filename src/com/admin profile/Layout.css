@@ -1,0 +1,63 @@
+/* ✅ Layout Container */
+.layout-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ✅ Navbar (Blended with Sidebar) */
+.navbar {
+    width: 100%;
+    height: 56px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* ✅ Same as Sidebar */
+    color: white;
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+    border-radius: 0;
+}
+
+/* ✅ Sidebar (Now Fully Blended with Navbar) */
+.sidebar {
+    width: 250px;
+    height: 100vh; /* ✅ Full Height */
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* ✅ Same as Navbar */
+    color: white;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 0;
+}
+
+/* ✅ Main Content (Adjusted for Sidebar & Navbar) */
+.content-area {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px;
+    margin-top: 56px;
+    background: #f4f4f4;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* ✅ Mobile Adjustments */
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    .content-area {
+        margin-left: 0;
+        padding: 15px;
+    }
+}

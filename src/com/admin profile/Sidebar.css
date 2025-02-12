@@ -1,0 +1,116 @@
+/* ✅ Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    padding: 1rem;
+    box-shadow: none;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ✅ Sidebar Content (Fix for Hidden Links) */
+.sidebar-content {
+    flex-grow: 1;  /* Ensures content takes available space */
+    margin-top: 80px;  /* ✅ Pushes links below navbar */
+    overflow-y: auto;  /* Allows scrolling if needed */
+}
+
+/* ✅ Sidebar Links */
+.sidebar ul {
+    padding: 0;
+    list-style: none;
+}
+.sidebar ul li {
+    margin-bottom: 0.5rem;
+}
+.sidebar ul li a,
+.dropdown-toggle {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 0.6rem;
+    border-radius: 6px;
+    transition: background 0.3s ease, padding 0.2s ease;
+    cursor: pointer;
+}
+
+/* ✅ Hover Effect */
+.sidebar ul li a:hover,
+.dropdown-toggle:hover,
+.logout-button button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding-left: 1rem;
+}
+
+/* ✅ Dropdown Styling */
+.dropdown-menu {
+    display: none;
+    width: 100%;
+    background: linear-gradient(135deg, #6a11cb, #2575fc) !important;
+    border-radius: 6px;
+    margin-top: 0.4rem;
+    padding: 0.4rem 0;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ✅ Show dropdown when active */
+.dropdown.active .dropdown-menu {
+    display: block;
+    position: relative;
+}
+
+/* ✅ Dropdown Links */
+.dropdown-menu li {
+    padding-left: 1rem;
+}
+.dropdown-menu li a {
+    color: white;
+    padding: 0.6rem;
+    display: block;
+    background: transparent !important;
+    transition: background 0.3s ease, padding 0.2s ease;
+}
+
+/* ✅ Hover Effect for Dropdown Links */
+.dropdown-menu li a:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white;
+    padding-left: 1.2rem;
+}
+
+/* ✅ Dropdown Arrow */
+.dropdown-toggle::after {
+    content: " ▼";
+    font-size: 0.8rem;
+    color: white;
+    margin-left: 8px;
+}
+
+/* ✅ Logout Button */
+.logout-button {
+    text-align: center;
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+.logout-button button {
+    width: 100%;
+    padding: 0.6rem;
+    background: transparent;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}

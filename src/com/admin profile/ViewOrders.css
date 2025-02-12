@@ -1,0 +1,152 @@
+/* Center align the heading */
+.view-orders-container h2 {
+  text-align: center;
+}
+
+/* Fix the table header and add a scrollbar for the table body */
+.table-responsive {
+  overflow-x: auto;
+  max-height: 500px; /* Adjust height as needed */
+  position: relative;
+}
+
+#orderTable thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #007bff; /* Match the header background color */
+}
+
+#orderTable tbody {
+  display: block;
+  overflow-y: auto;
+  max-height: 450px; /* Adjust height as needed */
+}
+
+#orderTable thead,
+#orderTable tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Ensure the table header and body align properly */
+#orderTable thead th,
+#orderTable tbody td {
+  width: auto; /* Adjust column widths automatically */
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Improve button styles */
+button.btn-danger {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+button.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Alerts (Bootstrap-styled) */
+.alert-box {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  min-width: 250px;
+  z-index: 1050;
+}
+
+.alert-box .alert {
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Success Alert */
+.alert-success {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Error Alert */
+.alert-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Ensure table works on smaller screens */
+@media (max-width: 1024px) {
+  #orderTable {
+    font-size: 15px;
+  }
+
+  #orderTable thead th {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #orderTable tbody td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  button.btn-danger {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  #orderTable {
+    font-size: 14px;
+  }
+
+  #orderTable thead th {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  #orderTable tbody td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  button.btn-danger {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .alert-box {
+    top: 5px;
+    right: 5px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  #orderTable {
+    font-size: 13px;
+  }
+
+  #orderTable thead th {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  #orderTable tbody td {
+    font-size: 11px;
+    padding: 5px;
+  }
+
+  button.btn-danger {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}

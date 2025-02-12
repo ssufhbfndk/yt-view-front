@@ -1,0 +1,39 @@
+/* Custom CSS for CompleteOrder */
+.video-link {
+  text-decoration: none;
+  color: #0d6efd; /* Bootstrap primary color */
+}
+
+.video-link:hover {
+  text-decoration: underline;
+}
+
+/* Toast Notification Styling */
+.toast {
+  z-index: 1000;
+}
+
+/* Modal Styling */
+.modal {
+  z-index: 1050;
+}
+
+/* Toast Notification Styles */
+.toast-alert {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 400px;
+  z-index: 1050; /* Alert should be above everything */
+  pointer-events: auto; /* Allows interaction with other elements */
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure background is not blocking interaction */
+.modal-backdrop {
+  display: none !important;
+}

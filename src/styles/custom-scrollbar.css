@@ -1,0 +1,45 @@
+/* Custom Scrollbar for Bootstrap-like appearance */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+  }
+  
+  /* Ensure only content scrolls, header remains fixed */
+  .table-container {
+    overflow-y: auto;
+    max-height: 500px; /* Adjust height as needed */
+  }
+  
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  /* Apply scrolling fix to entire site */
+  body {
+    overflow: hidden;
+  }
+  
+  .main-content {
+    overflow-y: auto;
+    height: calc(100vh - 60px); /* Adjust for header height */
+    padding-bottom: 10px;
+  }
+  
