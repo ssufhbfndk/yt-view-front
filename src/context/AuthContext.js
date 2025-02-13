@@ -16,8 +16,8 @@ export const AuthProvider = ({ children }) => {
       try {
         
         const [adminResponse, userResponse] = await Promise.all([
-          fetch("http://localhost:5000/api/admin/check-session", { credentials: "include" }),
-          fetch("http://localhost:5000/api/clientUser/check-session", { credentials: "include" }),
+          fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, { credentials: "include" }),
+          fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, { credentials: "include" }),
         ]);
 
         const adminData = await adminResponse.json();
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const adminLogout = async () => {
-    await fetch("http://localhost:5000/api/admin/logout", { method: "POST", credentials: "include" });
+    await fetch(`${process.env.REACT_APP_API_URL}/admin/logout`, { method: "POST", credentials: "include" });
     setAdmin(null);
     navigate("/adminlogin");
   };
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const userLogout = async () => {
-    await fetch("http://localhost:5000/api/clientUser/logout", { method: "POST", credentials: "include" });
+    await fetch(`${process.env.REACT_APP_API_URL}/clientUser/logout`, { method: "POST", credentials: "include" });
     setUser(null);
     navigate("/userlogin");
   };
