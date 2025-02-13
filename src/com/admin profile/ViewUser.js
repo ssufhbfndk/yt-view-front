@@ -41,7 +41,7 @@ const ViewUsers = () => {
         $("#usersTable").DataTable().destroy();
       }
 
-      const response = await axios.get("http://localhost:5000/api/user/get-users");
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/get-users`);
       setUsers(response.data);
     } catch (err) {
       showToast("Error fetching users.", "danger");
@@ -108,7 +108,7 @@ const ViewUsers = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/user/update-coins-bulk", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/user/update-coins-bulk`, {
         usernames: targetUsers,
         coins: updateAmount,
         operation: "subtract", // Subtract the entered value from the current coins
@@ -130,7 +130,7 @@ const ViewUsers = () => {
   const confirmDeleteUsers = async () => {
     if (!confirmDelete || confirmDelete.length === 0) return;
     try {
-      const response = await axios.post("http://localhost:5000/api/user/delete-bulk", { usernames: confirmDelete });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/delete-bulk`, { usernames: confirmDelete });
 
       if (response.data.success) {
         showToast("Users deleted successfully!", "success");

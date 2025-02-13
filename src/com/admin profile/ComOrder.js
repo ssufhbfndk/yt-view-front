@@ -34,7 +34,7 @@ const CompleteOrder = () => {
       if ($.fn.DataTable.isDataTable("#orderTable")) {
         $("#orderTable").DataTable().destroy();
       }
-      const response = await axios.get("http://localhost:5000/api/orders/ordersComplete");
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders/ordersComplete`);
       setOrders(response.data.orders);
     } catch (error) {
       showToast("Failed to load orders.", "danger");
@@ -76,7 +76,7 @@ const CompleteOrder = () => {
     if (!confirmDelete) return;
   
     try {
-      await axios.delete(`http://localhost:5000/api/orders/deleteOrderComplete/${confirmDelete}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/orders/deleteOrderComplete/${confirmDelete}`);
       
       showToast("Order deleted successfully!", "success");
       setConfirmDelete(null); // Modal close karna

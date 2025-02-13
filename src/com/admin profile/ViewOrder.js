@@ -58,7 +58,7 @@ const ViewOrders = () => {
         $("#orderTable").DataTable().destroy();
       }
 
-      const response = await axios.get("http://localhost:5000/api/orders/ordersData");
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders/ordersData`);
       setOrders(response.data.orders);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -101,7 +101,7 @@ const ViewOrders = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/orders/ordersData/${confirmDelete.order_id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/orders/ordersData/${confirmDelete.order_id}`, {
         data: { table: confirmDelete.tableName },
       });
 

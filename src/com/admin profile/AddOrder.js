@@ -23,7 +23,7 @@ const AddOrder = () => {
 
     try {
       // Step 3: Send the data to the backend for processing
-      const response = await axios.post("http://localhost:5000/api/orders/process", { data: dataArray });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/orders/process`, { data: dataArray });
 
       if (response.data.success) {
         setSuccess("Data processed successfully.");

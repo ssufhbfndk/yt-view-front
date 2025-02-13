@@ -34,7 +34,7 @@ const UserProfile = () => {
 
   const fetchNumViews = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/num-views/${user.username}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/num-views/${user.username}`);
       if (response.data.success) {
         setNumViews(response.data.num_views);
       }
@@ -47,7 +47,7 @@ const UserProfile = () => {
     while (loopActive.current) {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/orders/fetch-order/${user.username}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders/fetch-order/${user.username}`);
         if (response.data.success && response.data.order) {
           const extractedVideoId = extractVideoId(response.data.order.video_link);
           if (extractedVideoId) {
@@ -86,7 +86,7 @@ const UserProfile = () => {
 
   const incrementNumViews = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/user/increment-views`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/increment-views`, {
         username: user.username,
       });
       if (response.data.success) {

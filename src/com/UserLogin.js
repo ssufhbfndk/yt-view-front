@@ -28,7 +28,7 @@ const UserLogin = () => {
     try {
       // First, try user login
       const userResponse = await axios.post(
-        "http://localhost:5000/api/clientUser/login",
+        `${process.env.REACT_APP_API_URL}/clientUser/login`,
         { username },
         { withCredentials: true }
       );
@@ -43,7 +43,7 @@ const UserLogin = () => {
       } else {
         // If user login fails, try admin login
         const adminResponse = await axios.post(
-          "http://localhost:5000/api/admin/login",
+          `${process.env.REACT_APP_API_URL}/admin/login`,
           { username },
           { withCredentials: true }
         );

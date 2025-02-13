@@ -16,7 +16,7 @@ const AddUser = () => {
 
     try {
       // Check if user exists in the database
-      const checkUser = await axios.post("http://localhost:5000/api/user/check-user", { username });
+      const checkUser = await axios.post(`${process.env.REACT_APP_API_URL}/user/check-user`, { username });
 
       if (checkUser.data.exists) {
         setMessage({ type: "error", text: "Username already exists." });
@@ -24,7 +24,7 @@ const AddUser = () => {
       }
 
       // Add user
-      const response = await axios.post("http://localhost:5000/api/user/add-user", { username });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/add-user`, { username });
 
       if (response.data.success) {
         setMessage({ type: "success", text: "User added successfully." });
