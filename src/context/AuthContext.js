@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
         const userData = await userResponse.json();
 
         if (adminData.success) {
+          console.log(adminData.admin);
           setAdmin(adminData.admin);
           if (location.pathname === "/adminlogin") navigate("/dashboard");
         } else {
