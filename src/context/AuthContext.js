@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
           fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, { credentials: "include" }),
           fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, { credentials: "include" }),
         ]);
-        console.log(adminData.json());
+        console.log(adminResponse.json());
         const adminData = await adminResponse.json();
         const userData = await userResponse.json();
         
