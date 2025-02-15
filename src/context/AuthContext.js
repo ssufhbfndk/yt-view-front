@@ -12,48 +12,36 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    let isMounted = true; // ✅ Prevent state update after unmount
-
     const checkSession = async () => {
       try {
-        const responses = await Promise.allSettled([
+        
+        const [adminResponse, userResponse] = await Promise.all([
           fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, { credentials: "include" }),
           fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, { credentials: "include" }),
         ]);
-
-        const adminResponse = responses[0];
-        const userResponse = responses[1];
-
-        // ✅ Debugging: Log responses
-        console.log("Admin Response:", adminResponse);
-        console.log("User Response:", userResponse);
-
-        if (adminResponse.status === "fulfilled" && adminResponse.value.ok) {
-          const adminData = await adminResponse.value.json();
-          if (adminData.success && isMounted) {
-            setAdmin(adminData.admin);
-            if (location.pathname === "/adminlogin") navigate("/dashboard");
-          }
+        console.log(adminData.json());
+        const adminData = await adminResponse.json();
+        const userData = await userResponse.json();
+        
+        if (adminData.success) {
+          setAdmin(adminData.admin);
+          if (location.pathname === "/adminlogin") navigate("/dashboard");
         } else {
-          if (isMounted) setAdmin(null);
+          setAdmin(null);
         }
 
-        if (userResponse.status === "fulfilled" && userResponse.value.ok) {
-          const userData = await userResponse.value.json();
-          if (userData.success && isMounted) {
-            setUser(userData.user);
-            if (location.pathname === "/userlogin") navigate("/userprofile");
-          }
+        if (userData.success) {
+          setUser(userData.user);
+          if (location.pathname === "/userlogin") navigate("/userprofile");
         } else {
-          if (isMounted) setUser(null);
+          setUser(null);
         }
       } catch (error) {
-        console.error("❌ Session check failed:", error);
+        console.error("❌ Session check failed", error);
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
     };
-
 
     checkSession();
   }, [location.pathname]); // ✅ Update session check when route changes
