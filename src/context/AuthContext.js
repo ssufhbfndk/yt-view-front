@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
           fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, {
             method: "GET",
             credentials: 'include', // Cookies send karein
-            headers: { "Content-Type": "application/json" },
+           
           }),
           fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, {
             method: "GET",
