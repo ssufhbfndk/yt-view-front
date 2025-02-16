@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }) => {
       try {
         // Fetch admin and user session data simultaneously
         const [adminResponse, userResponse] = await Promise.all([
-          fetch(`${REACT_APP_API_URL}/admin/check-session`, {
+          fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, {
             credentials: 'include', // Cookies send karein
           }),
-          fetch(`${REACT_APP_API_URL}/clientUser/check-session`, {
+          fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, {
             credentials: 'include', // Cookies send karein
           }),
         ]);
