@@ -23,6 +23,7 @@ const AdminLogin = () => {
     });
 
     const data = await response.json();
+    console.log(data.headers);
     if (data.success) {
       adminLogin(data.admin);
       navigate("/dashboard");
