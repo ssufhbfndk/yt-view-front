@@ -14,32 +14,30 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        // Fetch admin and user session data simultaneously
         const [adminResponse, userResponse] = await Promise.all([
           fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, {
             method: "GET",
-            credentials: 'include', // Cookies send karein
-           
+            credentials: 'include',
           }),
           fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, {
             method: "GET",
-            credentials: 'include', // Cookies send karein
+            credentials: 'include',
           }),
         ]);
-    
-        // Parse JSON responses
+  
         const adminData = await adminResponse.json();
         const userData = await userResponse.json();
-    
-        // Handle admin session
+  
+        console.log("🔍 Admin Session Response:", adminData); // Debugging
+        console.log("🔍 User Session Response:", userData); // Debugging
+  
         if (adminData.success) {
           setAdmin(adminData.admin);
           if (location.pathname === '/adminlogin') navigate('/dashboard');
         } else {
           setAdmin(null);
         }
-    
-        // Handle user session
+  
         if (userData.success) {
           setUser(userData.user);
           if (location.pathname === '/userlogin') navigate('/userprofile');
@@ -52,10 +50,10 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     };
-
+  
     checkSession();
-  }, [location.pathname]); // ✅ Update session check when route changes
-
+  }, [location.pathname]);
+  
   const adminLogin = (adminData) => {
     setAdmin(adminData);
     navigate("/dashboard");
