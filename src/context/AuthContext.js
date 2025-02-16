@@ -14,30 +14,37 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        
+        // Fetch admin and user session data simultaneously
         const [adminResponse, userResponse] = await Promise.all([
-          fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, { credentials: "include" }),
-          fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, { credentials: "include" }),
+          fetch(`${REACT_APP_API_URL}/admin/check-session`, {
+            credentials: 'include', // Cookies send karein
+          }),
+          fetch(`${REACT_APP_API_URL}/clientUser/check-session`, {
+            credentials: 'include', // Cookies send karein
+          }),
         ]);
-       
+    
+        // Parse JSON responses
         const adminData = await adminResponse.json();
         const userData = await userResponse.json();
-        
+    
+        // Handle admin session
         if (adminData.success) {
           setAdmin(adminData.admin);
-          if (location.pathname === "/adminlogin") navigate("/dashboard");
+          if (location.pathname === '/adminlogin') navigate('/dashboard');
         } else {
           setAdmin(null);
         }
-
+    
+        // Handle user session
         if (userData.success) {
           setUser(userData.user);
-          if (location.pathname === "/userlogin") navigate("/userprofile");
+          if (location.pathname === '/userlogin') navigate('/userprofile');
         } else {
           setUser(null);
         }
       } catch (error) {
-        console.error("❌ Session check failed", error);
+        console.error('❌ Session check failed', error);
       } finally {
         setLoading(false);
       }

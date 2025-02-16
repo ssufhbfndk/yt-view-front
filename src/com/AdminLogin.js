@@ -15,7 +15,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setError("");
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/login`, {
+    const response = await fetch(`https://yt-view-backend.vercel.app/api/admin/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
