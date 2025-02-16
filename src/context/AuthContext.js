@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
             credentials: 'include', // Cookies send karein
           }),
         ]);
-        console.log(adminResponse.json());
     
         // Parse JSON responses
         const adminData = await adminResponse.json();
