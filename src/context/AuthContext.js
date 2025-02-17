@@ -17,11 +17,11 @@ export const AuthProvider = ({ children }) => {
         const [adminResponse, userResponse] = await Promise.all([
           fetch(`${process.env.REACT_APP_API_URL}/admin/check-session`, {
             method: "GET",
-            credentials: 'include',
+            credentials: "include",
           }),
           fetch(`${process.env.REACT_APP_API_URL}/clientUser/check-session`, {
             method: "GET",
-            credentials: 'include',
+            credentials: "include",
           }),
         ]);
   
