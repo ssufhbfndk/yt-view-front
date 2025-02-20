@@ -99,22 +99,19 @@ const ViewOrders = () => {
 
   const deleteOrder = async () => {
     if (!confirmDelete) return;
-
+  
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/orders/ordersData/${confirmDelete.order_id}`, {
-        data: { table: confirmDelete.tableName },
-      });
-
+      await axios.delete(`${process.env.REACT_APP_API_URL}/orders/ordersData/${confirmDelete.order_id}`);
+  
       showToast("Order deleted successfully!", "success");
-
       setConfirmDelete(null); // Close modal properly
-      fetchOrders(); // Fetch new data after deletion
+      fetchOrders(); // Refresh data
     } catch (error) {
       console.error("Error deleting order:", error);
       showToast("Failed to delete order.", "danger");
     }
   };
-
+  
   const showToast = (message, type) => {
     setToast({ show: true, message, type });
     setTimeout(() => setToast({ show: false, message: "", type: "" }), 5000); // 5 seconds
