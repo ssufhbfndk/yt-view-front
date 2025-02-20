@@ -28,8 +28,6 @@ export const AuthProvider = ({ children }) => {
         const adminData = await adminResponse.json();
         const userData = await userResponse.json();
   
-        console.log("🔍 Admin Session Response:", adminData); // Debugging
-        console.log("🔍 User Session Response:", userData); // Debugging
   
         if (adminData.success) {
           setAdmin(adminData.admin);
