@@ -15,15 +15,18 @@ const AddOrder = () => {
     // Step 1: Split the string into an array
     const dataArray = dataString.split(',');
 
-    // Step 2: Check if the array is complete (divisible by 3)
-    if (dataArray.length % 3 !== 0) {
-      setError("Invalid data format. Please provide data in chunks of 3 (orderId, videoLink, quantity).");
+    // Step 2: Check if the array is complete (divisible by 4)
+    if (dataArray.length % 4 !== 0) {
+      setError("Invalid data format. Please provide data in chunks of 4 (orderId, videoLink, quantity, duration).");
       return;
     }
 
     try {
       // Step 3: Send the data to the backend for processing
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/orders/process`, { data: dataArray });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/orders/process`,
+        { data: dataArray }
+      );
 
       if (response.data.success) {
         setSuccess("Data processed successfully.");
@@ -48,7 +51,7 @@ const AddOrder = () => {
                 type="text"
                 className="form-control"
                 id="dataString"
-                placeholder="Enter orderId, videoLink, quantity"
+                placeholder="Enter orderId, videoLink, quantity, duration"
                 value={dataString}
                 onChange={(e) => setDataString(e.target.value)}
                 required
