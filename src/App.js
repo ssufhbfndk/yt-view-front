@@ -3,9 +3,9 @@ import "./styles/custom-scrollbar.css";
 import { AuthProvider } from "./context/AuthContext";
 import { AdminProtectedRoute, UserProtectedRoute } from "./routes/ProtectedRoute";
 import AdminLogin from "./com/admin panel/admin login/AdminLogin";
-import Layout from "./com/admin panel/Layout"; // Updated to use Layout
-import UserLogin from "./com/UserLogin";
-import UserProfile from "./com/UserProfile";
+import Layout from "./com/admin panel/dashboard/Layout"; // Updated to use Layout
+import UserLogin from "./com/user/UserLogin";
+import UserProfile from "./com/user/UserProfile";
 import ViewUser from "./com/admin panel/users/ViewUser";
 import AddUser from "./com/admin panel/users/AddUser";
 import ViewOrder from "./com/admin panel/orders/ViewOrder";
