@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import "./styles/custom-scrollbar.css";
 import { AuthProvider } from "./context/AuthContext";
 import { AdminProtectedRoute, UserProtectedRoute } from "./routes/ProtectedRoute";
-import AdminLogin from "./com/AdminLogin";
+import AdminLogin from "./com/admin panel/admin login/AdminLogin";
 import Layout from "./com/admin panel/Layout"; // Updated to use Layout
 import UserLogin from "./com/UserLogin";
 import UserProfile from "./com/UserProfile";
