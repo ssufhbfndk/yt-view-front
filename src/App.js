@@ -3,16 +3,16 @@ import "./styles/custom-scrollbar.css";
 import { AuthProvider } from "./context/AuthContext";
 import { AdminProtectedRoute, UserProtectedRoute } from "./routes/ProtectedRoute";
 import AdminLogin from "./com/AdminLogin";
-import Layout from "./com/admin profile/Layout"; // Updated to use Layout
+import Layout from "./com/admin panel/Layout"; // Updated to use Layout
 import UserLogin from "./com/UserLogin";
 import UserProfile from "./com/UserProfile";
-import ViewUser from "./com/admin profile/ViewUser";
-import AddUser from "./com/admin profile/AddUser";
-import ViewOrder from "./com/admin profile/ViewOrder";
-import AddOrder from "./com/admin profile/AddOrder";
-import ComOrder from "./com/admin profile/ComOrder";
-import UpdateProfile from "./com/admin profile/UpdateProfile"; // Add UpdateProfile component
-import Dashboard from "./com/admin profile/Dashboard";
+import ViewUser from "./com/admin panel/users/ViewUser";
+import AddUser from "./com/admin panel/users/AddUser";
+import ViewOrder from "./com/admin panel/orders/ViewOrder";
+import AddOrder from "./com/admin panel/orders/AddOrder";
+import ComOrder from "./com/admin panel/orders/ComOrder";
+import UpdateProfile from "./com/admin panel/dashboard/UpdateProfile"; // Add UpdateProfile component
+import Dashboard from "./com/admin panel/dashboard/Dashboard";
 
 
 function App() {
