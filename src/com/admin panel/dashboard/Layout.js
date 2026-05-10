@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+import Sidebar from "../main/Sidebar";
+import Navbar from "../main/Navbar";
 import "./Layout.css";
 
 const Layout = () => {
