@@ -13,7 +13,7 @@ import AddOrder from "./com/admin panel/orders/AddOrder";
 import ComOrder from "./com/admin panel/orders/ComOrder";
 import UpdateProfile from "./com/admin panel/dashboard/UpdateProfile"; // Add UpdateProfile component
 import Dashboard from "./com/admin panel/dashboard/Dashboard";
-
+import Transactions from "./com/admin panel/paymnets/Transactions";
 
 function App() {
   return (
@@ -32,7 +32,8 @@ function App() {
               <Route path="view-order" element={<ViewOrder />} />
               <Route path="add-order" element={<AddOrder />} />
               <Route path="complete-order" element={<ComOrder />} />
-              <Route path="update-profile" element={<UpdateProfile />} /> {/* Update Profile route */}
+              <Route path="update-profile" element={<UpdateProfile />} /> 
+              <Route path="/transactions" element={<Transactions />} /> 
             </Route>
           </Route>
 

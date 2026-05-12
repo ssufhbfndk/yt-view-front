@@ -17,6 +17,7 @@ const Sidebar = ({ isSidebarOpen, handleLogout }) => {
     <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
       <div className="sidebar-content">
         <ul className="list-unstyled">
+
           {/* Dashboard */}
           <li>
             <Link to="/dashboard">Dashboard</Link>
@@ -29,15 +30,19 @@ const Sidebar = ({ isSidebarOpen, handleLogout }) => {
 
           {/* Users Dropdown */}
           <li
-            className={`dropdown ${activeDropdown === "users" ? "active" : ""}`}
+            className={`dropdown ${
+              activeDropdown === "users" ? "active" : ""
+            }`}
             onMouseEnter={() => handleMouseEnter("users")}
             onMouseLeave={handleMouseLeave}
           >
             <span className="dropdown-toggle">Users</span>
+
             <ul className="dropdown-menu">
               <li>
                 <Link to="/add-user">Add User</Link>
               </li>
+
               <li>
                 <Link to="/view-user">View Users</Link>
               </li>
@@ -46,23 +51,32 @@ const Sidebar = ({ isSidebarOpen, handleLogout }) => {
 
           {/* Orders Dropdown */}
           <li
-            className={`dropdown ${activeDropdown === "orders" ? "active" : ""}`}
+            className={`dropdown ${
+              activeDropdown === "orders" ? "active" : ""
+            }`}
             onMouseEnter={() => handleMouseEnter("orders")}
             onMouseLeave={handleMouseLeave}
           >
             <span className="dropdown-toggle">Orders</span>
+
             <ul className="dropdown-menu">
               <li>
                 <Link to="/add-order">Add Order</Link>
               </li>
+
               <li>
                 <Link to="/view-order">View Orders</Link>
               </li>
+
               <li>
                 <Link to="/complete-order">Complete Orders</Link>
               </li>
             </ul>
           </li>
+              {/* Payment (NOW SIMPLE LINK) */}
+<li>
+  <Link to="/transactions">Payment</Link>
+</li>
         </ul>
       </div>
 

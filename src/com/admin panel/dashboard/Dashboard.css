@@ -1,21 +1,64 @@
-.dashboard-content {
-  padding: 2rem;
-  text-align: center;
+.dashboard-page {
+  padding: 25px;
+  background: #f4f7fb;
+  min-height: 100vh;
 }
 
-.stats-container {
+.dashboard-card {
+  border-radius: 18px;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+.dashboard-card .card-body {
+  padding: 25px;
+}
+
+.icon-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  color: white;
 }
 
-.stat-box {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: white;
-  padding: 1rem;
-  border-radius: 10px;
-  width: 200px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.users-card .icon-box {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.orders-card .icon-box {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+.completed-card .icon-box {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+
+.revenue-card .icon-box {
+  background: linear-gradient(135deg, #fa709a, #fee140);
+}
+
+.dashboard-card h2 {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.refresh-btn {
+  border-radius: 12px;
+  padding: 10px 18px;
+}
+
+.mini-box {
+  background: white;
+  border-radius: 15px;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
