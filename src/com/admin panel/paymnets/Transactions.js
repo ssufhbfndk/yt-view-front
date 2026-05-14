@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Transactions.css";
+import PaymentInvoice from "./PaymentInvoice";
 
 const Transactions = () => {
+const [refreshKey, setRefreshKey] = useState(0);
+const [showInvoice, setShowInvoice] = useState(false);
+const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const [transactions, setTransactions] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
@@ -21,6 +25,10 @@ const Transactions = () => {
     message: "",
     type: "danger",
   });
+
+  useEffect(() => {
+  fetchTransactions();
+}, [page, limit, status, search, refreshKey]);
 
   // =========================
   // TOAST
@@ -88,6 +96,8 @@ const Transactions = () => {
     setLimit(50);
     setSearch("");
     setStatus("all");
+     // 🔥 FORCE API CALL (even if same values)
+  setRefreshKey(prev => prev + 1);
   };
 
   // =========================
@@ -114,7 +124,7 @@ const Transactions = () => {
 
       {/* TOAST */}
       {toast.show && (
-        <div className={`alert alert-${toast.type} custom-toast`}>
+        <div className={`alert alert-${toast.type} app-toast`}>
           {toast.message}
         </div>
       )}
@@ -130,55 +140,46 @@ const Transactions = () => {
           </div>
         </div>
 
-        {/* STATUS TABS */}
-        <div className="status-tabs d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div className="status-tabs">
 
-          <div className="d-flex flex-wrap gap-2">
+  <div className="tabs-left">
 
-            <button
-              className={`tab-btn ${status === "all" ? "active-tab" : ""}`}
-              onClick={() => changeStatus("all")}
-            >
-              All Transactions
-            </button>
+    <button className={`tab-btn ${status === "all" ? "active-tab" : ""}`}
+      onClick={() => changeStatus("all")}>
+      All Transactions
+    </button>
 
-            <button
-              className={`tab-btn ${status === "pending" ? "active-tab" : ""}`}
-              onClick={() => changeStatus("pending")}
-            >
-              Pending
-            </button>
+    <button className={`tab-btn ${status === "pending" ? "active-tab" : ""}`}
+      onClick={() => changeStatus("pending")}>
+      Pending
+    </button>
 
-            <button
-              className={`tab-btn ${status === "completed" ? "active-tab" : ""}`}
-              onClick={() => changeStatus("completed")}
-            >
-              Completed
-            </button>
+    <button className={`tab-btn ${status === "completed" ? "active-tab" : ""}`}
+      onClick={() => changeStatus("completed")}>
+      Completed
+    </button>
 
-            <button
-              className={`tab-btn ${status === "rejected" ? "active-tab" : ""}`}
-              onClick={() => changeStatus("rejected")}
-            >
-              Rejected
-            </button>
+    <button className={`tab-btn ${status === "rejected" ? "active-tab" : ""}`}
+      onClick={() => changeStatus("rejected")}>
+      Rejected
+    </button>
 
-          </div>
+  </div>
 
-          <div className="header-right">
-            <input
-              type="text"
-              className="form-control search-input"
-              placeholder="Search username or transaction id..."
-              value={search}
-              onChange={(e) => {
-                setPage(1);
-                setSearch(e.target.value);
-              }}
-            />
-          </div>
+  <div className="tabs-right">
+    <input
+      type="text"
+      className="form-control search-input"
+      placeholder="Search username or transaction id..."
+      value={search}
+      onChange={(e) => {
+        setPage(1);
+        setSearch(e.target.value);
+      }}
+    />
+  </div>
 
-        </div>
+</div>
 
         {/* TABLE */}
         <div className="card-body">
@@ -214,7 +215,14 @@ const Transactions = () => {
                   </tr>
                 ) : transactions.length > 0 ? (
                   transactions.map((item) => (
-                    <tr key={item.id}>
+                    <tr
+  key={item.id}
+  style={{ cursor: "pointer" }}
+  onClick={() => {
+    setSelectedTransaction(item);
+    setShowInvoice(true);
+  }}
+>
                       <td>{item.id}</td>
                       <td>{item.username}</td>
                       <td>{item.bank_name}</td>
@@ -246,8 +254,8 @@ const Transactions = () => {
                       </td>
                       <td>{new Date(item.created_at).toLocaleString()}</td>
                       <td>
-  {item.updated_at
-    ? new Date(item.updated_at).toLocaleString()
+  {item.status_updated_at
+    ? new Date(item.status_updated_at).toLocaleString()
     : "Not updated yet"}
 </td>
                     </tr>
@@ -267,53 +275,81 @@ const Transactions = () => {
           </div>
 
           {/* PAGINATION */}
-          <div className="d-flex justify-content-between align-items-center mt-3">
+<div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
 
-            <div>
-              <select
-                className="form-select"
-                value={limit}
-                onChange={(e) => {
-                  setLimit(Number(e.target.value));
-                  setPage(1);
-                }}
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
+  {/* LIMIT */}
+  <div style={{ minWidth: "100px" }}>
+    <select
+      className="form-select form-select-sm"
+      value={limit}
+      onChange={(e) => {
+        setLimit(Number(e.target.value));
+        setPage(1);
+      }}
+    >
+      <option value={10}>10</option>
+      <option value={25}>25</option>
+      <option value={50}>50</option>
+      <option value={100}>100</option>
+    </select>
+  </div>
 
-            <div>
-              Page {page} of {totalPages}
-            </div>
+  {/* PAGE INFO */}
+  <div className="fw-semibold text-center">
+    Page {page} of {totalPages}
+  </div>
 
-            <div className="d-flex gap-2">
-              <button
-                className="btn btn-dark"
-                onClick={prevPage}
-                disabled={page === 1}
-              >
-                Prev
-              </button>
+  {/* BUTTONS (SAME) */}
+  <div className="d-flex gap-2">
+    <button
+      className="btn btn-dark"
+      onClick={prevPage}
+      disabled={page === 1}
+    >
+      Prev
+    </button>
 
-              <button
-                className="btn btn-primary"
-                onClick={nextPage}
-                disabled={page === totalPages}
-              >
-                Next
-              </button>
-            </div>
+    <button
+      className="btn btn-primary"
+      onClick={nextPage}
+      disabled={page === totalPages}
+    >
+      Next
+    </button>
+  </div>
 
-          </div>
+</div>
 
         </div>
 
       </div>
+<PaymentInvoice
+  show={showInvoice}
+  onClose={() => setShowInvoice(false)}
+  transaction={selectedTransaction}
 
+  onUpdateTransaction={(updatedData) => {
+
+    setTransactions((prev) =>
+      prev.map((item) =>
+        item.id === updatedData.id
+          ? {
+              ...item,
+
+              status: updatedData.status,
+
+              updated_at: updatedData.updated_at,
+
+              invoice_num: updatedData.invoice_num,
+            }
+          : item
+      )
+    );
+
+  }}
+/>
     </div>
+    
   );
 };
 

@@ -1,269 +1,421 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import $ from "jquery";
-import "datatables.net-bs5";
-import "datatables.net-responsive-bs5";
-import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
-import "datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./ViewUsers.css";
 
 const ViewUsers = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [confirmDelete, setConfirmDelete] = useState(null);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updateAmount, setUpdateAmount] = useState("");
-  const [updateUsername, setUpdateUsername] = useState(null);
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [status, setStatus] = useState("all");
+  const [search, setSearch] = useState("");
+
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(50);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    type: "danger",
+  });
+
+  // =========================
+  // FETCH USERS
+  // =========================
   useEffect(() => {
     fetchUsers();
+  }, [page, limit, status, search, refreshKey]);
 
-    return () => {
-      // Destroy DataTable on unmount
-      if ($.fn.DataTable.isDataTable("#usersTable")) {
-        $("#usersTable").DataTable().destroy();
-      }
-    };
-  }, []);
+  // =========================
+  // TOAST
+  // =========================
+  const showToast = (message, type = "danger") => {
 
-  useEffect(() => {
-    if (users.length > 0) {
-      initializeDataTable();
-    }
-  }, [users]);
+    setToast({
+      show: true,
+      message,
+      type,
+    });
 
-  const fetchUsers = async () => {
-    try {
-      // Destroy DataTable before fetching new data
-      if ($.fn.DataTable.isDataTable("#usersTable")) {
-        $("#usersTable").DataTable().destroy();
-      }
-
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/get-users`);
-      setUsers(response.data);
-    } catch (err) {
-      showToast("Error fetching users.", "danger");
-    }
-  };
-
-  const initializeDataTable = () => {
     setTimeout(() => {
-      $("#usersTable").DataTable({
-        responsive: true,
-        paging: true,
-        autoWidth: false,
-        scrollX: true,
-        searching: true,
-        ordering: true,
-        destroy: true,
-        drawCallback: function () {
-          // Reapply custom styles after every table redraw
-          $("#usersTable thead th").css({
-            backgroundColor: "#007bff",
-            color: "white",
-            textAlign: "center",
-            padding: "12px",
-            fontSize: "16px",
-          });
-
-          $("#usersTable tbody td").css({
-            textAlign: "center",
-            verticalAlign: "middle",
-            padding: "10px",
-            fontSize: "14px",
-          });
-        },
+      setToast({
+        show: false,
+        message: "",
+        type: "danger",
       });
-    }, 300);
+    }, 3000);
+
   };
 
-  const showToast = (message, type) => {
-    setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 5000); // 5 seconds
-  };
 
-  const handleSelectUser = (username) => {
-    setSelectedUsers((prev) =>
-      prev.includes(username) ? prev.filter((user) => user !== username) : [...prev, username]
+  const getLastActiveText = (time) => {
+  if (!time) return "Never";
+
+  const now = new Date();
+  const last = new Date(time);
+
+  const diffMs = now - last;
+
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+
+  if (diffSec < 60) return "Just now";
+  if (diffMin < 60) return `${diffMin} min ago`;
+  if (diffHour < 24) return `${diffHour} hour ago`;
+  return `${diffDay} day ago`;
+};
+
+  // =========================
+  // API
+  // =========================
+  const fetchUsers = async () => {
+
+  try {
+
+    setLoading(true);
+
+    let url = "";
+
+    // 🔍 SEARCH API
+    if (search && search.trim() !== "") {
+
+      url = `${process.env.REACT_APP_API_URL}/user/search-users`;
+
+    }
+
+    // 📋 NORMAL LIST API
+    else {
+
+      url = `${process.env.REACT_APP_API_URL}/user/get-users`;
+
+    }
+
+    const res = await axios.get(url, {
+      params: {
+        page,
+        limit,
+        status,
+        search: search || "",
+      },
+    });
+
+    setUsers(res.data.users || []);
+    setTotalPages(res.data.totalPages || 1);
+
+  } catch (err) {
+
+    showToast(
+      err?.response?.data?.message || "Failed to load users"
     );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
+
+  // =========================
+  // RESET PAGE
+  // =========================
+  const resetUsers = () => {
+
+    setPage(1);
+    setLimit(50);
+    setSearch("");
+    setStatus("all");
+
+    // FORCE REFRESH
+    setRefreshKey((prev) => prev + 1);
+
   };
 
-  const handleUpdateCoins = (username = null) => {
-    setUpdateUsername(username); // Set the username for single update
-    setShowUpdateModal(true); // Show the custom update modal
+  // =========================
+  // STATUS CHANGE
+  // =========================
+  const changeStatus = (val) => {
+
+    setStatus(val);
+    setPage(1);
+
   };
 
-  const confirmUpdateCoins = async () => {
-    const targetUsers = updateUsername ? [updateUsername] : selectedUsers;
-    if (targetUsers.length === 0) {
-      showToast("Select at least one user!", "warning");
-      return;
+  // =========================
+  // PAGINATION
+  // =========================
+  const nextPage = () => {
+
+    if (page < totalPages) {
+      setPage(page + 1);
     }
 
-    if (!updateAmount || isNaN(updateAmount)) {
-      showToast("Please enter a valid number.", "warning");
-      return;
-    }
-
-    try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/user/update-coins-bulk`, {
-        usernames: targetUsers,
-        coins: updateAmount,
-        operation: "subtract", // Subtract the entered value from the current coins
-      });
-      showToast("Coins updated successfully!", "success");
-      fetchUsers(); // Refresh the table after updating coins
-      setSelectedUsers([]);
-      setShowUpdateModal(false); // Hide the modal
-      setUpdateAmount(""); // Reset the input field
-    } catch {
-      showToast("Failed to update coins.", "danger");
-    }
   };
 
-  const handleDeleteUsers = async (username = null) => {
-    setConfirmDelete(username ? [username] : selectedUsers);
-  };
+  const prevPage = () => {
 
-  const confirmDeleteUsers = async () => {
-    if (!confirmDelete || confirmDelete.length === 0) return;
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/delete-bulk`, { usernames: confirmDelete });
-
-      if (response.data.success) {
-        showToast("Users deleted successfully!", "success");
-        fetchUsers(); // Refresh the table after deleting users
-        setSelectedUsers([]);
-      } else {
-        showToast("Failed to delete users.", "danger");
-      }
-    } catch {
-      showToast("Failed to delete users.", "danger");
+    if (page > 1) {
+      setPage(page - 1);
     }
-    setConfirmDelete(null);
+
   };
 
   return (
-    <div className="view-users-container container">
-      <h3 className="text-center mt-3">View Users</h3>
 
-      <div className="bulk-actions mb-3">
-        <button
-          className="btn btn-primary me-2"
-          onClick={() => handleUpdateCoins()}
-          disabled={selectedUsers.length === 0}
-        >
-          Update Coins
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={() => handleDeleteUsers()}
-          disabled={selectedUsers.length === 0}
-        >
-          Delete Selected
-        </button>
-      </div>
+    <div className="container-fluid user-container mt-4">
 
-      <div className="table-container">
-        <table id="usersTable" className="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    setSelectedUsers(e.target.checked ? users.map((user) => user.username) : [])
-                  }
-                  checked={selectedUsers.length === users.length && users.length > 0}
-                />
-              </th>
-              <th>Ser. No.</th>
-              <th>Username</th>
-              <th>Coins</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={user.username}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedUsers.includes(user.username)}
-                    onChange={() => handleSelectUser(user.username)}
-                  />
-                </td>
-                <td>{index + 1}</td>
-                <td>{user.username}</td>
-                <td>{user.num_views || 0}</td>
-                <td>
-                  <button
-                    className="btn btn-sm btn-primary me-2"
-                    onClick={() => handleUpdateCoins(user.username)}
-                  >
-                    Update Coins
-                  </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDeleteUsers(user.username)}
-                  >
-                    Delete User
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Toast Notification */}
+      {/* TOAST */}
       {toast.show && (
-        <div className="custom-toast">
-          <div className={`alert alert-${toast.type}`}>
-            {toast.message}
-          </div>
+        <div className={`alert alert-${toast.type} app-toast`}>
+          {toast.message}
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
-      {confirmDelete && (
-        <div className="delete-modal">
-          <div className="modal-content">
-            <p>Are you sure you want to delete {confirmDelete.length} user(s)?</p>
-            <button className="btn btn-danger" onClick={confirmDeleteUsers}>
-              Confirm
-            </button>
-            <button className="btn btn-secondary" onClick={() => setConfirmDelete(null)}>
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+      <div className="card shadow-lg border-0 rounded-4">
 
-      {/* Update Coins Modal */}
-      {showUpdateModal && (
-        <div className="update-modal">
-          <div className="modal-content">
-            <p>Enter the amount to subtract from {updateUsername || "selected users"}:</p>
+        {/* HEADER */}
+        <div className="card-header user-header">
+
+          <div className="header-center">
+
+            <h3
+              className="mb-0"
+              onClick={resetUsers}
+            >
+              Users
+            </h3>
+
+          </div>
+
+        </div>
+
+        {/* STATUS + SEARCH */}
+        <div className="status-tabs">
+
+          {/* LEFT */}
+          <div className="tabs-left">
+
+            <button
+              className={`tab-btn ${
+                status === "all" ? "active-tab" : ""
+              }`}
+              onClick={() => changeStatus("all")}
+            >
+              All Users
+            </button>
+
+            <button
+              className={`tab-btn ${
+                status === "1" ? "active-tab" : ""
+              }`}
+              onClick={() => changeStatus("1")}
+            >
+              Active
+            </button>
+
+            <button
+              className={`tab-btn ${
+                status === "0" ? "active-tab" : ""
+              }`}
+              onClick={() => changeStatus("0")}
+            >
+              Blocked
+            </button>
+
+          </div>
+
+          {/* RIGHT */}
+          <div className="tabs-right">
+
             <input
-              type="number"
-              className="form-control mb-3"
-              placeholder="Enter amount"
-              value={updateAmount}
-              onChange={(e) => setUpdateAmount(e.target.value)}
+              type="text"
+              className="form-control search-input"
+              placeholder="Search username / mobile..."
+              value={search}
+              onChange={(e) => {
+
+                setPage(1);
+                setSearch(e.target.value);
+
+              }}
             />
-            <button className="btn btn-primary me-2" onClick={confirmUpdateCoins}>
-              Update
-            </button>
-            <button className="btn btn-secondary" onClick={() => setShowUpdateModal(false)}>
-              Cancel
-            </button>
+
           </div>
+
         </div>
-      )}
+
+        {/* TABLE */}
+        <div className="card-body">
+
+          <div className="table-responsive">
+
+            <table className="table table-hover align-middle user-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Sr No</th>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Mobile</th>
+                  <th>Status</th>
+                  <th>Views</th>
+                  <th>Last Active</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {loading ? (
+
+                  <tr>
+                    <td
+                      colSpan="7"
+                      className="text-center py-5"
+                    >
+
+                      <div className="spinner-border text-primary"></div>
+
+                      <p className="mt-2 fw-semibold">
+                        Loading...
+                      </p>
+
+                    </td>
+                  </tr>
+
+                ) : users.length > 0 ? (
+
+                  users.map((u, index) => (
+
+                    <tr key={u.id}>
+
+                      {/* SERIAL NUMBER */}
+                      <td>
+                        {(page - 1) * limit + index + 1}
+                      </td>
+                        <td>{u.name}</td>
+
+
+                      <td>{u.username}</td>
+
+                      <td>{u.number}</td>
+
+                      <td>
+
+                        <span
+                          className={`badge ${
+                            Number(u.status) === 1
+                              ? "bg-success"
+                              : "bg-danger"
+                          }`}
+                        >
+                          {Number(u.status) === 1
+                            ? "Active"
+                            : "Blocked"}
+                        </span>
+
+                      </td>
+
+                      <td>{u.num_views || 0}</td>
+
+                     <td>{getLastActiveText(u.token_created_at)}</td>
+
+                    </tr>
+
+                  ))
+
+                ) : (
+
+                  <tr>
+
+                    <td
+                      colSpan="7"
+                      className="text-center py-5 fw-semibold"
+                    >
+                      No Users Found
+                    </td>
+
+                  </tr>
+
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          {/* PAGINATION */}
+          <div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+
+            {/* LIMIT */}
+            <div style={{ minWidth: "100px" }}>
+
+              <select
+                className="form-select form-select-sm"
+                value={limit}
+                onChange={(e) => {
+
+                  setLimit(Number(e.target.value));
+                  setPage(1);
+
+                }}
+              >
+
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+
+              </select>
+
+            </div>
+
+            {/* PAGE INFO */}
+            <div className="fw-bold text-center">
+
+              Page {page} of {totalPages}
+
+            </div>
+
+            {/* BUTTONS */}
+            <div className="d-flex gap-2">
+
+              <button
+                className="btn btn-dark"
+                onClick={prevPage}
+                disabled={page === 1}
+              >
+                Prev
+              </button>
+
+              <button
+                className="btn btn-primary"
+                onClick={nextPage}
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
+
   );
 };
 

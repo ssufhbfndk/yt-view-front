@@ -63,23 +63,28 @@ const Dashboard = () => {
   return (
     <div className="container-fluid dashboard-page">
 
-      {/* HEADER */}
-      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-        <div>
-          <h2 className="fw-bold mb-1">📊 Admin Dashboard</h2>
-          <p className="text-muted mb-0">
-            Live overview of system activity
-          </p>
-        </div>
+     {/* HEADER */}
+<div className="dashboard-header">
 
-        <button
-          className="btn btn-primary refresh-btn"
-          onClick={fetchDashboard}
-        >
-          <ArrowRepeat size={18} className="me-2" />
-          Refresh
-        </button>
-      </div>
+  <div>
+    <h2 className="fw-bold mb-1">
+      📊 Admin Dashboard
+    </h2>
+
+    <p className="text-muted mb-0">
+      Live overview of system activity
+    </p>
+  </div>
+
+  <button
+    className="refresh-btn"
+    onClick={fetchDashboard}
+  >
+    <ArrowRepeat size={16} />
+    Refresh
+  </button>
+
+</div>
 
       {/* STATS */}
       <div className="row g-4">

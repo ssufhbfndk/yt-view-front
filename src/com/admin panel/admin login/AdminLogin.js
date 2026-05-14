@@ -1,86 +1,187 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
-import "./AdminLogin.css"; // Custom CSS file for additional styling
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import {
+  FaUserShield,
+  FaUser,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  FaSignInAlt,
+  FaExclamationTriangle
+} from "react-icons/fa";
+
+import "./AdminLogin.css";
 
 const AdminLogin = () => {
-  const { adminLogin } = useAuth();
+
   const navigate = useNavigate();
+  const { adminLogin } = useAuth();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [loading, setLoading] = useState(false);
+
+  // =========================
+  // LOGIN
+  // =========================
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setError("");
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    if (!username.trim()) {
+      return setError("Username is required");
+    }
 
-    const data = await response.json();
-    if (data.success) {
-      adminLogin(data.admin);
-      navigate("/dashboard");
-    } else {
-      setError("Invalid Credentials");
+    if (!password.trim()) {
+      return setError("Password is required");
+    }
+
+    try {
+
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/admin/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        adminLogin(data.admin);
+        navigate("/dashboard");
+
+      } else {
+
+        setError(data.message || "Invalid Credentials");
+      }
+
+    } catch (err) {
+
+      setError("Server Error");
+
+    } finally {
+
+      setLoading(false);
     }
   };
 
   return (
-    <div className="admin-login-container d-flex justify-content-center align-items-center vh-100">
-      <div className="card login-card p-4 shadow">
-        <h2 className="text-center mb-4">Admin Login</h2>
-        {error && <div className="alert alert-danger text-center">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">Username</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
+
+    <div className="admin-login-container">
+
+      {/* TOAST ERROR (TOP NOTIFICATION) */}
+      {error && (
+        <div className="toast-error">
+          <FaExclamationTriangle className="me-2" />
+          {error}
+        </div>
+      )}
+
+      <div className="login-card">
+
+        {/* HEADER */}
+        <div className="login-header">
+
+          <div className="login-icon">
+            <FaUserShield />
           </div>
-          <div className="mb-3 position-relative">
-            <label className="form-label">Password</label>
-            <div className="input-group">
+
+          <h2>Admin Panel</h2>
+          <p>Secure Login Access</p>
+
+        </div>
+
+        {/* FORM */}
+        <form onSubmit={handleSubmit}>
+
+          {/* USERNAME */}
+          <div className="field">
+
+            <label>Username</label>
+
+            <div className="input-box">
+
+              <span className="icon">
+                <FaUser />
+              </span>
+
               <input
-                type={showPassword ? "text" : "password"} // Toggle between text and password type
-                className="form-control"
+                type="text"
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+
+            </div>
+
+          </div>
+
+          {/* PASSWORD */}
+          <div className="field">
+
+            <label>Password</label>
+
+            <div className="input-box">
+
+              <span className="icon">
+                <FaLock />
+              </span>
+
+              <input
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
+
               <button
                 type="button"
-                className="btn btn-outline-secondary"
-                onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
-                style={{
-                  border: "none",
-                  background: "none",
-                  position: "absolute",
-                  right: "10px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                }}
+                className="eye-btn"
+                onClick={() => setShowPassword(!showPassword)}
               >
-                <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i> {/* Bootstrap eye icons */}
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
+
             </div>
+
           </div>
-          <button type="submit" className="btn btn-primary w-100">
-            Login
+
+          {/* BUTTON */}
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : (
+              <>
+                <FaSignInAlt className="me-2" />
+                Login
+              </>
+            )}
           </button>
+
         </form>
+
       </div>
+
     </div>
   );
 };

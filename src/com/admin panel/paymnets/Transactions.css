@@ -1,11 +1,14 @@
 .transaction-container {
   padding: 10px;
   margin: 0;
-  overflow-x: hidden;   /* 👈 FIX PAGE STRETCH */
+  overflow-x: hidden;
   background: #f8f9fa;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
+
 .transaction-header {
   position: relative;
   display: flex;
@@ -20,15 +23,7 @@
   border-bottom: 1px solid #eee;
 }
 
-/* LEFT */
-.header-left {
-  width: 200px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* CENTER */
+/* CENTER TITLE */
 .header-center {
   position: absolute;
   left: 50%;
@@ -43,12 +38,14 @@
   cursor: pointer;
 }
 
-/* RIGHT */
+/* =========================
+   SEARCH
+========================= */
+
 .header-right {
   width: 280px;
 }
 
-/* SEARCH */
 .search-input {
   height: 40px;
   border-radius: 8px;
@@ -61,140 +58,185 @@
   border-color: #0d6efd;
 }
 
-/* LIMIT */
-.page-limit {
-  width: 90px;
-  height: 40px;
-  border-radius: 8px;
-  margin: 0;
-}
+/* =========================
+   STATUS TABS (MAIN FIX)
+========================= */
 
-/* STATUS TABS */
 .status-tabs {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 
   padding: 10px 15px;
   margin: 0;
 
+  background: #ffffff; /* ✅ FIX: proper white background */
   border-bottom: 1px solid #eee;
-  background: #fff;
+
+  flex-wrap: nowrap;
+  gap: 10px;
+
+  overflow-x: auto;
 }
 
+/* LEFT BUTTONS */
+.tabs-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* hide scrollbar (clean UI) */
+.tabs-left::-webkit-scrollbar {
+  display: none;
+}
+
+/* RIGHT SEARCH */
+.tabs-right {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+/* =========================
+   TAB BUTTON FIX (IMPORTANT)
+========================= */
+
 .tab-btn {
-  border: none;
+  border: 1px solid transparent; /* ✅ FIX */
   background: #f1f3f5;
 
   padding: 7px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
 
   font-size: 13px;
   font-weight: 600;
 
   cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s ease;
+
+  color: #333; /* ✅ FIX: text visible */
 }
 
+/* hover */
 .tab-btn:hover {
   background: #0d6efd;
   color: white;
 }
 
+/* active tab */
 .active-tab {
   background: #0d6efd;
   color: white;
+  border-color: #0d6efd;
+  box-shadow: 0 2px 8px rgba(13,110,253,0.3);
 }
 
-/* TABLE WRAPPER */
+/* =========================
+   TABLE
+========================= */
+
 .table-responsive {
   overflow-x: auto;
-  margin: 0;
-  padding: 0;
 }
 
-/* TABLE */
 .transaction-table {
-  min-width: 1000px;  /* 👈 controlled width */
-  margin: 0;
+  min-width: 1000px;
   border-collapse: collapse;
 }
 
-/* TABLE HEAD */
 .transaction-table thead th {
   background: #0d6efd;
   color: white;
-
   text-align: center;
   padding: 10px;
-
   white-space: nowrap;
   font-size: 13px;
 }
 
-/* TABLE BODY */
 .transaction-table tbody td {
   text-align: center;
   padding: 10px;
-
   white-space: nowrap;
   font-size: 12px;
 }
 
-/* ROW HOVER */
 .transaction-table tbody tr:hover {
   background: #f5f9ff;
 }
 
-/* BADGE */
-.badge {
-  font-size: 11px;
-  padding: 5px 10px;
-  border-radius: 15px;
-}
+/* =========================
+   PAGINATION
+========================= */
 
-/* PAGINATION */
 .pagination-container {
-  margin: 10px 0 0 0;
+  margin-top: 10px;
   padding: 10px 0;
-
-  border-top: 1px solid #eee;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* TOAST (unchanged clean) */
-.custom-toast {
+/* =========================
+   TOAST
+========================= */
+
+.app-toast {
   position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 9999;
+  top: 20px;
+  right: 20px;
 
-  display: inline-flex !important;
-  width: auto !important;
-  max-width: 240px;
+  max-width: 320px;
+  width: auto;
 
-  padding: 6px 10px !important;
-  margin: 0 !important;
+  padding: 12px 16px;
+  border-radius: 10px;
 
-  font-size: 12px;
-  line-height: 1.2;
+  color: white;
+  font-size: 14px;
 
-  border-radius: 6px;
+  z-index: 99999;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 
-  align-items: center;
+  animation: slideIn 0.3s ease;
+
+  white-space: normal;
 }
 
-/* MOBILE */
+.app-toast.success {
+  background: #198754;
+}
+
+.app-toast.danger {
+  background: #dc3545;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+}
+/* =========================
+   MOBILE FIX
+========================= */
+
 @media (max-width: 768px) {
 
   .transaction-header {
     flex-direction: column;
     gap: 10px;
-    align-items: stretch;
   }
 
   .header-center {
@@ -203,22 +245,25 @@
     text-align: center;
   }
 
-  .header-left,
   .header-right {
     width: 100%;
   }
 
-  .search-input,
-  .page-limit {
+  .status-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .tabs-left {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .tabs-right {
     width: 100%;
   }
 
-  .status-tabs {
-    flex-direction: column;
-  }
-
-  .pagination-container {
-    flex-direction: column;
-    gap: 10px;
+  .search-input {
+    width: 100%;
   }
 }

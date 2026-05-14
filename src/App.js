@@ -11,7 +11,7 @@ import AddUser from "./com/admin panel/users/AddUser";
 import ViewOrder from "./com/admin panel/orders/ViewOrder";
 import AddOrder from "./com/admin panel/orders/AddOrder";
 import ComOrder from "./com/admin panel/orders/ComOrder";
-import UpdateProfile from "./com/admin panel/dashboard/UpdateProfile"; // Add UpdateProfile component
+import AdminProfile from "./com/admin panel/dashboard/AdminProfile"; // Add UpdateProfile component
 import Dashboard from "./com/admin panel/dashboard/Dashboard";
 import Transactions from "./com/admin panel/paymnets/Transactions";
 
@@ -32,7 +32,7 @@ function App() {
               <Route path="view-order" element={<ViewOrder />} />
               <Route path="add-order" element={<AddOrder />} />
               <Route path="complete-order" element={<ComOrder />} />
-              <Route path="update-profile" element={<UpdateProfile />} /> 
+              <Route path="update-profile" element={<AdminProfile />} /> 
               <Route path="/transactions" element={<Transactions />} /> 
             </Route>
           </Route>
