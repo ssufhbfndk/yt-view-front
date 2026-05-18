@@ -1,116 +1,328 @@
-/* ✅ Sidebar Styling */
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: white;
-    padding: 1rem;
-    box-shadow: none;
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
+  width: 245px;
+  height: 100vh;
+ z-index: 1040;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background: linear-gradient(
+    180deg,
+    #5b21b6 0%,
+    #4338ca 55%,
+    #2563eb 100%
+  );
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 9999;
+
+  transition: transform 0.3s ease;
 }
 
-/* ✅ Sidebar Content (Fix for Hidden Links) */
+/* =========================
+   CONTENT
+========================= */
+
 .sidebar-content {
-    flex-grow: 1;  /* Ensures content takes available space */
-    margin-top: 80px;  /* ✅ Pushes links below navbar */
-    overflow-y: auto;  /* Allows scrolling if needed */
+  flex: 1;
+  overflow-y: auto;
+
+  padding: 76px 12px 14px;
 }
 
-/* ✅ Sidebar Links */
+/* =========================
+   LIST
+========================= */
+
 .sidebar ul {
-    padding: 0;
-    list-style: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
+
 .sidebar ul li {
-    margin-bottom: 0.5rem;
-}
-.sidebar ul li a,
-.dropdown-toggle {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 0.6rem;
-    border-radius: 6px;
-    transition: background 0.3s ease, padding 0.2s ease;
-    cursor: pointer;
+  margin-bottom: 6px;
 }
 
-/* ✅ Hover Effect */
-.sidebar ul li a:hover,
-.dropdown-toggle:hover,
-.logout-button button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding-left: 1rem;
+/* =========================
+   MAIN LINKS
+========================= */
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  padding: 11px 14px;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.25s ease;
 }
 
-/* ✅ Dropdown Styling */
-.dropdown-menu {
-    display: none;
-    width: 100%;
-    background: linear-gradient(135deg, #6a11cb, #2575fc) !important;
-    border-radius: 6px;
-    margin-top: 0.4rem;
-    padding: 0.4rem 0;
-    border: none !important;
-    box-shadow: none !important;
+/* HOVER */
+
+.sidebar ul li a:hover {
+  background: rgba(255,255,255,0.14);
+
+  transform: translateX(4px);
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* ✅ Show dropdown when active */
-.dropdown.active .dropdown-menu {
-    display: block;
-    position: relative;
+/* ACTIVE */
+
+.active-link {
+  background: linear-gradient(
+    135deg,
+    #3b82f6,
+    #2563eb
+  );
 }
 
-/* ✅ Dropdown Links */
-.dropdown-menu li {
-    padding-left: 1rem;
-}
-.dropdown-menu li a {
-    color: white;
-    padding: 0.6rem;
-    display: block;
-    background: transparent !important;
-    transition: background 0.3s ease, padding 0.2s ease;
+/* =========================
+   ICON
+========================= */
+
+.sidebar ul li a svg {
+  font-size: 16px;
+  min-width: 18px;
 }
 
-/* ✅ Hover Effect for Dropdown Links */
-.dropdown-menu li a:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: white;
-    padding-left: 1.2rem;
+/* =========================
+   DROPDOWN BUTTON
+========================= */
+
+.dropdown-btn {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 11px 14px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
 }
 
-/* ✅ Dropdown Arrow */
-.dropdown-toggle::after {
-    content: " ▼";
-    font-size: 0.8rem;
-    color: white;
-    margin-left: 8px;
+/* LEFT */
+
+.dropdown-left {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
-/* ✅ Logout Button */
-.logout-button {
-    text-align: center;
-    margin-top: auto;
-    position: sticky;
-    bottom: 0;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    border-top: 2px solid rgba(255, 255, 255, 0.1);
+/* ICON */
+
+.dropdown-left svg {
+  font-size: 16px;
+  min-width: 18px;
 }
-.logout-button button {
-    width: 100%;
-    padding: 0.6rem;
-    background: transparent;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+
+/* HOVER */
+
+.dropdown-btn:hover {
+  background: rgba(255,255,255,0.14);
+
+  transform: translateX(4px);
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ACTIVE */
+
+.dropdown-active {
+  background: rgba(255,255,255,0.12);
+}
+
+/* =========================
+   ARROW
+========================= */
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: 0.3s ease;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+/* =========================
+   DROPDOWN MENU
+========================= */
+
+.dropdown-menu-custom {
+  max-height: 0;
+
+  overflow: hidden;
+
+  transition: all 0.35s ease;
+
+  padding-left: 10px;
+
+  opacity: 0;
+}
+
+/* SHOW */
+
+.show-dropdown {
+  max-height: 300px;
+
+  margin-top: 6px;
+
+  opacity: 1;
+}
+
+/* DROPDOWN LINKS */
+
+.dropdown-menu-custom a {
+  display: flex;
+  align-items: center;
+
+  padding: 10px 14px;
+
+  margin-bottom: 6px;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.06);
+
+  backdrop-filter: blur(6px);
+
+  font-size: 13px !important;
+  font-weight: 500 !important;
+
+  transition: 0.25s ease;
+}
+
+/* =========================
+   LOGOUT
+========================= */
+
+.logout-section {
+  padding: 14px;
+
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(0,0,0,0.08);
+}
+
+.logout-btn {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 11px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.logout-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.sidebar-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.20);
+  border-radius: 20px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 235px;
+
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-content {
+    padding-top: 70px;
+  }
+
+
+  .dropdown-menu-custom a:hover {
+  background: rgba(255,255,255,0.14);
+
+  transform: translateX(5px);
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    box-shadow: 8px 0 30px rgba(0,0,0,0.35);
+  }
+
+}
 }

@@ -1,152 +1,375 @@
-/* Center align the heading */
-.view-orders-container h2 {
-  text-align: center;
+/* =========================
+   MAIN CONTAINER
+========================= */
+.order-container {
+  padding: 12px;
+  background: #f8f9fa;
 }
 
-/* Fix the table header and add a scrollbar for the table body */
-.table-responsive {
-  overflow-x: auto;
-  max-height: 500px; /* Adjust height as needed */
+/* =========================
+   HEADER (USER STYLE MATCH)
+========================= */
+.order-header {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 14px 18px;
+  min-height: 64px;
+
+  background: #fff;
+  border-bottom: 1px solid #eee;
 }
 
-#orderTable thead {
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-center h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0d6efd;
+  white-space: nowrap;
+}
+
+/* =========================
+   TABS ROW (COMPACT + CLEAN)
+========================= */
+.order-tabs-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #fff;
+  padding: 8px;   /* 🔥 reduced spacing */
+  border-radius: 10px;
+
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+/* LEFT */
+.tabs-left {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* TAB BUTTON */
+.order-tab-btn {
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+
+  background: #f8fafc;
+  color: #111;
+
+  font-size: 12.5px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* HOVER */
+.order-tab-btn:hover {
+  background: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+}
+
+/* ACTIVE TAB */
+.active-order-tab {
+  background: #0d6efd !important;
+  color: white !important;
+  border-color: #0d6efd !important;
+}
+
+/* RIGHT SEARCH */
+.tabs-right {
+  width: 240px;
+}
+
+.order-search-input {
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+  padding-left: 10px;
+}
+
+/* =========================
+   SELECT BAR (CLEAN UI)
+========================= */
+.selected-action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 12px;
+
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.selected-info h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.selected-info p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #444;
+}
+
+.selected-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* =========================
+   TABLE (PROFESSIONAL CLEAN)
+========================= */
+.table-responsive {
+  background: #fff;
+  border-radius: 10px;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* HEADER */
+.order-table thead th {
   position: sticky;
   top: 0;
-  z-index: 1;
-  background-color: #007bff; /* Match the header background color */
-}
+  z-index: 10;
 
-#orderTable tbody {
-  display: block;
-  overflow-y: auto;
-  max-height: 450px; /* Adjust height as needed */
-}
+  background: #0d6efd !important;
+  color: white !important;
 
-#orderTable thead,
-#orderTable tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-/* Ensure the table header and body align properly */
-#orderTable thead th,
-#orderTable tbody td {
-  width: auto; /* Adjust column widths automatically */
   text-align: center;
-  vertical-align: middle;
   padding: 10px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
-/* Improve button styles */
-button.btn-danger {
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
-}
-
-button.btn-danger:hover {
-  background-color: #c82333;
-}
-
-/* Alerts (Bootstrap-styled) */
-.alert-box {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  min-width: 250px;
-  z-index: 1050;
-}
-
-.alert-box .alert {
-  padding: 12px;
-  border-radius: 5px;
-  font-size: 14px;
+/* BODY */
+.order-table tbody td {
   text-align: center;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 9px;
+  font-size: 13px;
 }
 
-/* Success Alert */
-.alert-success {
-  background-color: #28a745;
-  color: white;
+/* ROW HOVER */
+.order-table tbody tr:hover {
+  background: #f5f9ff;
 }
 
-/* Error Alert */
-.alert-danger {
-  background-color: #dc3545;
-  color: white;
+/* CHECKBOX FIX */
+.order-table input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
 }
 
-/* Ensure table works on smaller screens */
-@media (max-width: 1024px) {
-  #orderTable {
-    font-size: 15px;
-  }
-
-  #orderTable thead th {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  #orderTable tbody td {
-    font-size: 13px;
-    padding: 8px;
-  }
-
-  button.btn-danger {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
+/* =========================
+   TOAST
+========================= */
+.order-toast {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 9999;
+  min-width: 240px;
 }
 
+/* =========================
+   BUTTONS UNIFIED
+========================= */
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.btn-primary {
+  background: #0d6efd !important;
+  color: white !important;
+}
+
+.btn-danger {
+  background: #dc2626 !important;
+  color: white !important;
+}
+
+.btn-secondary {
+  background: #6b7280 !important;
+  color: white !important;
+}
+
+.btn-dark {
+  background: #111827 !important;
+  color: white !important;
+}
+
+/* =========================
+   RESPONSIVE FIX
+========================= */
 @media (max-width: 768px) {
-  #orderTable {
-    font-size: 14px;
+  .order-tabs-row {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  #orderTable thead th {
-    font-size: 13px;
-    padding: 8px;
+  .tabs-right {
+    width: 100%;
   }
 
-  #orderTable tbody td {
-    font-size: 12px;
-    padding: 6px;
+  .tabs-left {
+    justify-content: center;
   }
 
-  button.btn-danger {
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-
-  .alert-box {
-    top: 5px;
-    right: 5px;
-    min-width: 200px;
+  .selected-action-bar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
+/* BACKDROP / OVERLAY */
+.custom-delete-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
 
-@media (max-width: 480px) {
-  #orderTable {
-    font-size: 13px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  #orderTable thead th {
-    font-size: 12px;
-    padding: 6px;
-  }
+  z-index: 9999; /* 🔥 important */
+}
 
-  #orderTable tbody td {
-    font-size: 11px;
-    padding: 5px;
-  }
+/* MODAL BOX */
+.delete-modal-box {
+  width: 350px;
+  max-width: 90%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
 
-  button.btn-danger {
-    font-size: 10px;
-    padding: 3px 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* TITLE */
+.delete-modal-box h4 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* TEXT */
+.delete-modal-box p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* BUTTON ROW */
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
   }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* =========================
+   DELETE LOADING OVERLAY
+========================= */
+
+.delete-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.45);
+
+  backdrop-filter: blur(4px);
+
+  z-index: 99999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-loading-box {
+  background: rgba(255,255,255,0.08);
+
+  padding: 28px 38px;
+
+  border-radius: 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-shadow:
+    0 0 25px rgba(13,110,253,0.25);
+}
+
+/* 🔥 DOTS ROW */
+.delete-loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.delete-loading-dots .spinner-grow {
+  width: 18px;
+  height: 18px;
+
+  color: #0d6efd;
+}
+
+.delete-loading-box p {
+  color: white;
+
+  margin-top: 14px;
+
+  font-weight: 600;
+
+  letter-spacing: 1px;
 }

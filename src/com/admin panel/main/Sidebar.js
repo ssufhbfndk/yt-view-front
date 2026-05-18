@@ -1,89 +1,182 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import {
+  FaUsers,
+  FaHome,
+  FaMoneyBillWave,
+  FaChevronDown,
+  FaSignOutAlt,
+  FaUserEdit,
+  FaClipboardList,
+} from "react-icons/fa";
+
 import "./Sidebar.css";
 
-const Sidebar = ({ isSidebarOpen, handleLogout }) => {
-  const [activeDropdown, setActiveDropdown] = useState(null);
+const Sidebar = ({
+  isSidebarOpen,
+  handleLogout,
+  setIsSidebarOpen,
+}) => {
 
-  const handleMouseEnter = (menu) => {
-    setActiveDropdown(menu);
+  const location = useLocation();
+
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [logoutLoading, setLogoutLoading] = useState(false);
+
+  // ✅ SAFE FUNCTION CHECK (IMPORTANT FIX)
+  const safeSetSidebar = (value) => {
+    if (typeof setIsSidebarOpen === "function") {
+      setIsSidebarOpen(value);
+    }
   };
 
-  const handleMouseLeave = () => {
+  
+  // ✅ CLOSE SIDEBAR MOBILE
+  const closeSidebarMobile = () => {
+    if (window.innerWidth < 992) {
+      safeSetSidebar(false);
+    }
+  };
+
+  // ✅ AUTO CLOSE ON ROUTE CHANGE (BEST FIX)
+  useEffect(() => {
+    if (window.innerWidth < 992) {
+      safeSetSidebar(false);
+    }
+  }, [location.pathname]);
+
+  // ✅ NAV CLICK
+  const handleNavClick = () => {
+
+  // ✅ close all dropdowns
+  setActiveDropdown(null);
+
+  // ✅ mobile sidebar close
+  closeSidebarMobile();
+};
+
+  // ✅ DROPDOWN TOGGLE
+  const toggleDropdown = (menu) => {
+
+  // only one dropdown open at a time
+  if (activeDropdown === menu) {
     setActiveDropdown(null);
+  } else {
+    setActiveDropdown(menu);
+  }
+
+};
+
+  // ✅ LOGOUT SAFE
+  const handleLogoutClick = async () => {
+    if (logoutLoading) return;
+
+    setLogoutLoading(true);
+
+    try {
+      await handleLogout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setLogoutLoading(false);
+    }
   };
 
   return (
     <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+
       <div className="sidebar-content">
-        <ul className="list-unstyled">
+        <ul>
 
-          {/* Dashboard */}
           <li>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard" onClick={handleNavClick}
+              className={location.pathname === "/dashboard" ? "active-link" : ""}
+            >
+              <FaHome />
+              <span>Dashboard</span>
+            </Link>
           </li>
 
-          {/* Update Profile */}
           <li>
-            <Link to="/update-profile">Update Profile</Link>
+            <Link to="/update-profile" onClick={handleNavClick}
+              className={location.pathname === "/update-profile" ? "active-link" : ""}
+            >
+              <FaUserEdit />
+              <span>Update Profile</span>
+            </Link>
           </li>
 
-          {/* Users Dropdown */}
-          <li
-            className={`dropdown ${
-              activeDropdown === "users" ? "active" : ""
-            }`}
-            onMouseEnter={() => handleMouseEnter("users")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <span className="dropdown-toggle">Users</span>
+          {/* USERS */}
+          <li className="dropdown-wrapper">
+            <button
+              className={`dropdown-btn ${activeDropdown === "users" ? "dropdown-active" : ""}`}
+              onClick={() => toggleDropdown("users")}
+            >
+              <div className="dropdown-left">
+                <FaUsers />
+                <span>Users</span>
+              </div>
 
-            <ul className="dropdown-menu">
-              <li>
-                <Link to="/add-user">Add User</Link>
-              </li>
+              <FaChevronDown
+                className={`dropdown-arrow ${activeDropdown === "users" ? "rotate" : ""}`}
+              />
+            </button>
 
-              <li>
-                <Link to="/view-user">View Users</Link>
-              </li>
-            </ul>
+            <div className={`dropdown-menu-custom ${activeDropdown === "users" ? "show-dropdown" : ""}`}>
+              <Link to="/add-user" onClick={handleNavClick}>Add User</Link>
+              <Link to="/view-user" onClick={handleNavClick}>View Users</Link>
+            </div>
           </li>
 
-          {/* Orders Dropdown */}
-          <li
-            className={`dropdown ${
-              activeDropdown === "orders" ? "active" : ""
-            }`}
-            onMouseEnter={() => handleMouseEnter("orders")}
-            onMouseLeave={handleMouseLeave}
-          >
-            <span className="dropdown-toggle">Orders</span>
+          {/* ORDERS */}
+          <li className="dropdown-wrapper">
+            <button
+              className={`dropdown-btn ${activeDropdown === "orders" ? "dropdown-active" : ""}`}
+              onClick={() => toggleDropdown("orders")}
+            >
+              <div className="dropdown-left">
+                <FaClipboardList />
+                <span>Orders</span>
+              </div>
 
-            <ul className="dropdown-menu">
-              <li>
-                <Link to="/add-order">Add Order</Link>
-              </li>
+              <FaChevronDown
+                className={`dropdown-arrow ${activeDropdown === "orders" ? "rotate" : ""}`}
+              />
+            </button>
 
-              <li>
-                <Link to="/view-order">View Orders</Link>
-              </li>
-
-              <li>
-                <Link to="/complete-order">Complete Orders</Link>
-              </li>
-            </ul>
+            <div className={`dropdown-menu-custom ${activeDropdown === "orders" ? "show-dropdown" : ""}`}>
+              <Link to="/add-order" onClick={handleNavClick}>Add Order</Link>
+              <Link to="/view-order" onClick={handleNavClick}>View Orders</Link>
+            </div>
           </li>
-              {/* Payment (NOW SIMPLE LINK) */}
-<li>
-  <Link to="/transactions">Payment</Link>
-</li>
+
+          <li>
+            <Link to="/transactions" onClick={handleNavClick}
+              className={location.pathname === "/transactions" ? "active-link" : ""}
+            >
+              <FaMoneyBillWave />
+              <span>Payments</span>
+            </Link>
+          </li>
+
         </ul>
       </div>
 
-      {/* Logout Button */}
-      <div className="logout-button">
-        <button onClick={handleLogout}>Logout</button>
+      {/* LOGOUT */}
+      <div className="logout-section">
+        <button
+          className="logout-btn"
+          onClick={handleLogoutClick}
+          disabled={logoutLoading}
+        >
+          <FaSignOutAlt />
+          <span>
+            {logoutLoading ? "Logging out..." : "Logout"}
+          </span>
+        </button>
       </div>
+
     </div>
   );
 };

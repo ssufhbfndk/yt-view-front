@@ -1,0 +1,131 @@
+.order-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f6fb;
+}
+
+/* CARD */
+.order-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
+.order-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* TABS */
+.order-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.order-tabs button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  background: #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.order-tabs button.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* FORM */
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-form input,
+.order-form textarea {
+  height: 38px;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+}
+
+.order-form textarea {
+  height: 70px;
+  resize: none;
+}
+
+/* BUTTON */
+.order-form button {
+  height: 38px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* MESSAGE */
+.msg {
+  margin-top: 8px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.msg.error {
+  color: red;
+}
+
+.msg.success {
+  color: green;
+}
+.toast-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+  animation: slideIn 0.3s ease;
+  z-index: 9999;
+}
+
+.toast-box.success {
+  background: #16a34a;
+}
+
+.toast-box.error {
+  background: #dc2626;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./ViewUsers.css";
-
+import UserInfoModal from "./UserInfoModal";
 const ViewUsers = () => {
+
+
+  const [showUserModal, setShowUserModal] = useState(false);
+
+const [selectedUser, setSelectedUser] = useState(null);
 
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -147,6 +152,21 @@ const ViewUsers = () => {
 
   };
 
+  const handleUserUpdate = (updatedUser) => {
+
+  setUsers((prev) =>
+    prev.map((u) =>
+      u.id === updatedUser.id
+        ? {
+            ...u,
+            number: updatedUser.number,
+            status: updatedUser.status,
+          }
+        : u
+    )
+  );
+
+};
   // =========================
   // PAGINATION
   // =========================
@@ -296,7 +316,14 @@ const ViewUsers = () => {
 
                   users.map((u, index) => (
 
-                    <tr key={u.id}>
+                     <tr
+  key={u.id}
+  style={{ cursor: "pointer" }}
+  onClick={() => {
+    setSelectedUser(u);
+    setShowUserModal(true);
+  }}
+>
 
                       {/* SERIAL NUMBER */}
                       <td>
@@ -413,7 +440,12 @@ const ViewUsers = () => {
         </div>
 
       </div>
-
+<UserInfoModal
+  show={showUserModal}
+  onClose={() => setShowUserModal(false)}
+  user={selectedUser}
+  onUpdateUser={handleUserUpdate}
+/>
     </div>
 
   );

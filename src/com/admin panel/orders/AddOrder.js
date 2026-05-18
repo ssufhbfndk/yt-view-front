@@ -1,71 +1,188 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "./AddOrder.css";
 
 const AddOrder = () => {
-  const [dataString, setDataString] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [tab, setTab] = useState("single");
 
-  const handleSubmit = async (e) => {
+  // SINGLE ORDER
+  const [orderId, setOrderId] = useState("");
+  const [videoLink, setVideoLink] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [seconds, setSeconds] = useState("");
+
+  // MULTI ORDER
+  const [multiText, setMultiText] = useState("");
+
+  // TOAST
+  const [toast, setToast] = useState({
+    show: false,
+    type: "",
+    message: "",
+  });
+
+  const showToast = (type, message) => {
+    setToast({ show: true, type, message });
+
+    setTimeout(() => {
+      setToast({ show: false, type: "", message: "" });
+    }, 3000);
+  };
+
+  // =========================
+  // SINGLE ORDER API
+  // =========================
+  const handleSingleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
 
-    // Step 1: Split the string into an array
-    const dataArray = dataString.split(',');
-
-    // Step 2: Check if the array is complete (divisible by 4)
-    if (dataArray.length % 4 !== 0) {
-      setError("Invalid data format. Please provide data in chunks of 4 (orderId, videoLink, quantity, duration).");
+    if (!orderId || !videoLink || !quantity || !seconds) {
+      showToast("error", "All fields are required");
       return;
     }
 
     try {
-      // Step 3: Send the data to the backend for processing
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/orders/process`,
-        { data: dataArray }
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/orders/single-order`,
+        { orderId, videoLink, quantity, seconds }
       );
 
-      if (response.data.success) {
-        setSuccess("Data processed successfully.");
-        setDataString('');
-      } else {
-        setError("Failed to process data.");
-      }
+      showToast("success", res.data.message || "Order created");
+
+      setOrderId("");
+      setVideoLink("");
+      setQuantity("");
+      setSeconds("");
     } catch (err) {
-      setError("Error connecting to server.");
+      showToast("error", "Server error");
+    }
+  };
+
+  // =========================
+  // MULTI ORDER API
+  // =========================
+  const handleMultiSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!multiText.trim()) {
+      showToast("error", "Multi order data required");
+      return;
+    }
+
+    const lines = multiText.trim().split("\n");
+
+    const orders = [];
+
+    for (let line of lines) {
+      const [orderId, videoLink, quantity, seconds] =
+        line.split(",");
+
+      if (!orderId || !videoLink || !quantity || !seconds) {
+        showToast("error", "Invalid multi order format");
+        return;
+      }
+
+      orders.push({
+        orderId: orderId.trim(),
+        videoLink: videoLink.trim(),
+        quantity: Number(quantity),
+        seconds: Number(seconds),
+      });
+    }
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/orders/multi-orders`,
+        { orders }
+      );
+
+      showToast("success", "Multi orders created");
+
+      setMultiText("");
+    } catch (err) {
+      showToast("error", "Multi order failed");
     }
   };
 
   return (
-    <div className="container-fluid d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-      <div className="row w-100 justify-content-center">
-        <div className="col-12 col-md-6 col-lg-4 p-3">
-          <h3 className="text-center mb-4">Add Order</h3>
-          <form onSubmit={handleSubmit} className="p-3 bg-light rounded shadow-sm">
-            <div className="form-group mb-3">
-              <label htmlFor="dataString">Order Data (comma-separated)</label>
-              <input
-                type="text"
-                className="form-control"
-                id="dataString"
-                placeholder="Enter orderId, videoLink, quantity, duration"
-                value={dataString}
-                onChange={(e) => setDataString(e.target.value)}
-                required
-              />
-            </div>
+    <div className="order-page">
 
-            <button type="submit" className="btn btn-primary btn-block mt-3">
-              Process Data
-            </button>
-
-            {error && <p className="text-danger text-center mt-2">{error}</p>}
-            {success && <p className="text-success text-center mt-2">{success}</p>}
-          </form>
+      {/* TOAST */}
+      {toast.show && (
+        <div className={`toast-box ${toast.type}`}>
+          {toast.message}
         </div>
+      )}
+
+      <div className="order-card">
+
+        <h2 className="order-title">📦 Add Order</h2>
+
+        {/* TABS */}
+        <div className="order-tabs">
+          <button
+            className={tab === "single" ? "active" : ""}
+            onClick={() => setTab("single")}
+          >
+            Single Order
+          </button>
+
+          <button
+            className={tab === "multi" ? "active" : ""}
+            onClick={() => setTab("multi")}
+          >
+            Multi Order
+          </button>
+        </div>
+
+        {/* SINGLE FORM */}
+        {tab === "single" && (
+          <form onSubmit={handleSingleSubmit} className="order-form">
+
+            <input
+              placeholder="Order ID"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+            />
+
+            <input
+              placeholder="YouTube Link"
+              value={videoLink}
+              onChange={(e) => setVideoLink(e.target.value)}
+            />
+
+            <input
+              placeholder="Quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+
+            <input
+              placeholder="Seconds"
+              value={seconds}
+              onChange={(e) => setSeconds(e.target.value)}
+            />
+
+            <button type="submit">Create Order</button>
+          </form>
+        )}
+
+        {/* MULTI FORM */}
+        {tab === "multi" && (
+          <form onSubmit={handleMultiSubmit} className="order-form">
+
+            <textarea
+              placeholder={`Format:
+orderId,videoLink,quantity,seconds
+orderId,videoLink,quantity,seconds`}
+              value={multiText}
+              onChange={(e) => setMultiText(e.target.value)}
+              rows={8}
+            />
+
+            <button type="submit">Create Multi Orders</button>
+          </form>
+        )}
+
       </div>
     </div>
   );

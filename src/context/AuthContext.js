@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import AppLoader from "./../AppLoader";
 
 const AuthContext = createContext();
 
@@ -74,7 +75,7 @@ export const AuthProvider = ({ children }) => {
     navigate("/userlogin");
   };
 
-  if (loading) return <div>Loading...</div>; // ✅ Ensure session is checked before rendering
+  if (loading) return <AppLoader />; // ✅ Ensure session is checked before rendering
 
   return (
     <AuthContext.Provider value={{ admin, user, adminLogin, adminLogout, userLogin, userLogout }}>
