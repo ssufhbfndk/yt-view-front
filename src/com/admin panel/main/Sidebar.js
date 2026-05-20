@@ -9,6 +9,7 @@ import {
   FaSignOutAlt,
   FaUserEdit,
   FaClipboardList,
+  FaBell,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -159,7 +160,20 @@ const Sidebar = ({
               <span>Payments</span>
             </Link>
           </li>
-
+<li>
+  <Link
+    to="/notifications"
+    onClick={handleNavClick}
+    className={
+      location.pathname === "/notifications"
+        ? "active-link"
+        : ""
+    }
+  >
+    <FaBell />
+    <span>Notification</span>
+  </Link>
+</li>
         </ul>
       </div>
 

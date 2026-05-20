@@ -11,6 +11,8 @@ import AddOrder from "./com/admin panel/orders/AddOrder";
 import AdminProfile from "./com/admin panel/dashboard/AdminProfile"; // Add UpdateProfile component
 import Dashboard from "./com/admin panel/dashboard/Dashboard";
 import Transactions from "./com/admin panel/paymnets/Transactions";
+import NotificationBroadcast from "./com/admin panel/notification/NotificationBroadcast";
+import NotFound from "./com/NotFound";
 import React, { useState, useEffect } from "react";
 function App() {
 
@@ -31,7 +33,9 @@ function App() {
               <Route path="view-order" element={<ViewOrder />} />
               <Route path="add-order" element={<AddOrder />} />
               <Route path="update-profile" element={<AdminProfile />} /> 
-              <Route path="/transactions" element={<Transactions />} /> 
+              <Route path="transactions" element={<Transactions />} /> 
+              <Route path="notifications" element={<NotificationBroadcast/>}/>
+              <Route path="*" element={<NotFound/>}/>
             </Route>
           </Route>
 
