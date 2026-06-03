@@ -5,7 +5,7 @@ import "./ViewUsers.css";
 import UserInfoModal from "./UserInfoModal";
 const ViewUsers = () => {
 
-
+const [totalUsers, setTotalUsers] = useState(0);
   const [showUserModal, setShowUserModal] = useState(false);
 
 const [selectedUser, setSelectedUser] = useState(null);
@@ -110,8 +110,9 @@ const [selectedUser, setSelectedUser] = useState(null);
       },
     });
 
-    setUsers(res.data.users || []);
-    setTotalPages(res.data.totalPages || 1);
+   setUsers(res.data.users || []);
+setTotalPages(res.data.totalPages || 1);
+setTotalUsers(res.data.total || 0);
 
   } catch (err) {
 
@@ -284,6 +285,7 @@ const [selectedUser, setSelectedUser] = useState(null);
                   <th>Sr No</th>
                   <th>Name</th>
                   <th>Username</th>
+                   <th>Email</th> 
                   <th>Mobile</th>
                   <th>Status</th>
                   <th>Views</th>
@@ -299,7 +301,7 @@ const [selectedUser, setSelectedUser] = useState(null);
 
                   <tr>
                     <td
-                      colSpan="7"
+                      colSpan="8"
                       className="text-center py-5"
                     >
 
@@ -333,7 +335,7 @@ const [selectedUser, setSelectedUser] = useState(null);
 
 
                       <td>{u.username}</td>
-
+                      <td>{u.email}</td>
                       <td>{u.number}</td>
 
                       <td>
@@ -365,7 +367,7 @@ const [selectedUser, setSelectedUser] = useState(null);
                   <tr>
 
                     <td
-                      colSpan="7"
+                      colSpan="8"
                       className="text-center py-5 fw-semibold"
                     >
                       No Users Found
@@ -409,10 +411,8 @@ const [selectedUser, setSelectedUser] = useState(null);
 
             {/* PAGE INFO */}
             <div className="fw-bold text-center">
-
-              Page {page} of {totalPages}
-
-            </div>
+  Page {page} of {totalPages} | Total Users: {totalUsers}
+</div>
 
             {/* BUTTONS */}
             <div className="d-flex gap-2">

@@ -4,7 +4,8 @@ import "./AddOrder.css";
 
 const AddOrder = () => {
   const [tab, setTab] = useState("single");
-
+const [singleLoading, setSingleLoading] = useState(false);
+const [multiLoading, setMultiLoading] = useState(false);
   // SINGLE ORDER
   const [orderId, setOrderId] = useState("");
   const [videoLink, setVideoLink] = useState("");
@@ -34,27 +35,37 @@ const AddOrder = () => {
   // =========================
   const handleSingleSubmit = async (e) => {
     e.preventDefault();
-
+if (singleLoading) return;
     if (!orderId || !videoLink || !quantity || !seconds) {
       showToast("error", "All fields are required");
       return;
     }
 
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/orders/single-order`,
-        { orderId, videoLink, quantity, seconds }
-      );
+   try {
 
-      showToast("success", res.data.message || "Order created");
+  setSingleLoading(true);
 
-      setOrderId("");
-      setVideoLink("");
-      setQuantity("");
-      setSeconds("");
-    } catch (err) {
-      showToast("error", "Server error");
-    }
+  const res = await axios.post(
+    `${process.env.REACT_APP_API_URL}/orders/single-order`,
+    { orderId, videoLink, quantity, seconds }
+  );
+
+  showToast("success", res.data.message || "Order created");
+
+  setOrderId("");
+  setVideoLink("");
+  setQuantity("");
+  setSeconds("");
+
+} catch (err) {
+
+  showToast("error", "Server error");
+
+} finally {
+
+  setSingleLoading(false);
+
+}
   };
 
   // =========================
@@ -62,7 +73,7 @@ const AddOrder = () => {
   // =========================
   const handleMultiSubmit = async (e) => {
     e.preventDefault();
-
+if (multiLoading) return;
     if (!multiText.trim()) {
       showToast("error", "Multi order data required");
       return;
@@ -90,17 +101,27 @@ const AddOrder = () => {
     }
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/orders/multi-orders`,
-        { orders }
-      );
 
-      showToast("success", "Multi orders created");
+  setMultiLoading(true);
 
-      setMultiText("");
-    } catch (err) {
-      showToast("error", "Multi order failed");
-    }
+  const res = await axios.post(
+    `${process.env.REACT_APP_API_URL}/orders/multi-orders`,
+    { orders }
+  );
+
+  showToast("success", "Multi orders created");
+
+  setMultiText("");
+
+} catch (err) {
+
+  showToast("error", "Multi order failed");
+
+} finally {
+
+  setMultiLoading(false);
+
+}
   };
 
   return (
@@ -162,7 +183,14 @@ const AddOrder = () => {
               onChange={(e) => setSeconds(e.target.value)}
             />
 
-            <button type="submit">Create Order</button>
+           <button
+  type="submit"
+  disabled={singleLoading}
+>
+  {singleLoading
+    ? "Creating..."
+    : "Create Order"}
+</button>
           </form>
         )}
 
@@ -179,7 +207,14 @@ orderId,videoLink,quantity,seconds`}
               rows={8}
             />
 
-            <button type="submit">Create Multi Orders</button>
+           <button
+  type="submit"
+  disabled={multiLoading}
+>
+  {multiLoading
+    ? "Creating..."
+    : "Create Multi Orders"}
+</button>
           </form>
         )}
 

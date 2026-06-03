@@ -5,6 +5,7 @@ import {
   FaUser,
   FaMobileAlt,
   FaUserCheck,
+  FaEnvelope
 } from "react-icons/fa";
 
 import "./UserInfoModal.css";
@@ -237,7 +238,28 @@ const UserInfoModal = ({
               </div>
 
             </div>
+{/* EMAIL */}
+<div className="user-field">
 
+  <div className="user-field-icon">
+    <FaEnvelope />
+  </div>
+
+  <div className="user-field-content">
+
+    <label>
+      Email
+    </label>
+
+    <input
+      type="email"
+      value={user.email || ""}
+      disabled
+    />
+
+  </div>
+
+</div>
             {/* MOBILE */}
             <div className="user-field">
 

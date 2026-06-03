@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./ViewOrders.css";
 
 const ViewOrders = () => {
-
+const [totalOrders, setTotalOrders] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
 const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 const [deleteLoading, setDeleteLoading] = useState(false);
@@ -107,8 +107,9 @@ const totalRemaining = selectedOrders.reduce(
         },
       });
 
-      setOrders(res.data.orders || []);
-      setTotalPages(res.data.totalPages || 1);
+     setOrders(res.data.orders || []);
+setTotalPages(res.data.totalPages || 1);
+setTotalOrders(res.data.total || 0);
 
     } catch (err) {
 
@@ -153,13 +154,25 @@ const totalRemaining = selectedOrders.reduce(
   // SELECT ALL
   // =========================
   const toggleSelectAll = () => {
-  if (selectedOrders.length === orders.length) {
-    setSelectedOrders([]);
-  } else {
-    setSelectedOrders(orders);
-  }
-};
 
+  const allSelected = orders.every(order =>
+    selectedOrders.some(
+      selected =>
+        selected.order_id === order.order_id
+    )
+  );
+
+  if (allSelected) {
+
+    setSelectedOrders([]);
+
+  } else {
+
+    setSelectedOrders([...orders]);
+
+  }
+
+};
 // =========================
 // ROW CLICK DELETE
 // =========================
@@ -444,9 +457,14 @@ const handleRowDelete = (order) => {
                     <input
                       type="checkbox"
                       checked={
-                        orders.length > 0 &&
-                        selectedOrders.length === orders.length
-                      }
+  orders.length > 0 &&
+  orders.every(order =>
+    selectedOrders.some(
+      selected =>
+        selected.order_id === order.order_id
+    )
+  )
+}
                       onChange={toggleSelectAll}
                     />
 
@@ -513,7 +531,24 @@ const handleRowDelete = (order) => {
                         {(page - 1) * limit + index + 1}
                       </td>
 
-                      <td onClick={(e) => e.stopPropagation()}>{o.order_id}</td>
+                      <td
+  onClick={(e) => {
+    e.stopPropagation();
+
+    navigator.clipboard.writeText(o.order_id);
+
+    showToast(
+      `Copied: ${o.order_id}`,
+      "success"
+    );
+  }}
+  style={{
+    cursor: "pointer",
+    fontWeight: "600"
+  }}
+>
+  {o.order_id}
+</td>
 
                       <td>
 
@@ -610,12 +645,9 @@ const handleRowDelete = (order) => {
             </div>
 
             {/* PAGE */}
-            <div className="fw-bold text-center">
-
-              Page {page} of {totalPages}
-
-            </div>
-
+           <div className="fw-bold text-center">
+  Page {page} of {totalPages} | Total Orders: {totalOrders}
+</div>
             {/* BUTTONS */}
             <div className="d-flex gap-2">
 
