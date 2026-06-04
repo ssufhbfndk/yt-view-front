@@ -377,3 +377,127 @@
   text-align: center;
   color: gray;
 }
+/* ====================================
+   NOTIFICATION MODAL (PAYMENT DETAIL)
+==================================== */
+
+.notification-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.55);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 10000;
+}
+
+.notification-modal {
+  width: 420px;
+  max-width: 92%;
+
+  background: #fff;
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+  animation: pop 0.2s ease-in-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* HEADER */
+.notification-modal-header {
+  background: linear-gradient(90deg, #6d11d5, #2563eb);
+  color: white;
+
+  padding: 14px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* CLOSE BUTTON */
+.modal-close-btn {
+  background: transparent;
+  border: none;
+
+  color: white;
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+/* BODY */
+.notification-modal-body {
+  padding: 14px 16px;
+}
+
+.notification-row {
+  margin-bottom: 10px;
+  font-size: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
+.notification-row span:first-child {
+  font-weight: 600;
+  color: #333;
+}
+
+.notification-row span:last-child {
+  color: #555;
+}
+
+/* FOOTER BUTTON */
+.notification-modal-footer {
+  padding: 12px 16px;
+
+  display: flex;
+  justify-content: flex-end;
+
+  background: #f8f9fa;
+}
+
+.notification-open-btn {
+  background: #2563eb;
+  color: white;
+
+  border: none;
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.notification-open-btn:hover {
+  background: #1d4ed8;
+}
