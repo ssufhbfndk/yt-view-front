@@ -243,9 +243,19 @@
     width: 100%;
   }
 
-  .tabs-left {
-    justify-content: center;
+ .tabs-left {
+    display: flex;
+    flex-wrap: nowrap;        /* 🔥 IMPORTANT */
+    overflow-x: auto;         /* 🔥 horizontal scroll */
+    justify-content: flex-start;  /* 🔥 center hatao */
+    gap: 6px;
+
+    padding: 6px 8px;
+    scroll-padding-left: 8px;
+
+    -webkit-overflow-scrolling: touch;
   }
+
 
   .selected-action-bar {
     flex-direction: column;
