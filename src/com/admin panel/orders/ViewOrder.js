@@ -37,12 +37,15 @@ const totalRemaining = selectedOrders.reduce(
   (sum, o) => sum + Number(o.remaining || 0),
   0
 );
+
+
   // =========================
   // FETCH
   // =========================
   useEffect(() => {
   fetchOrders();
 }, [page, limit, status, search, refreshKey]);
+
 
   const resetOrders = () => {
   setPage(1);
@@ -85,6 +88,10 @@ const totalRemaining = selectedOrders.reduce(
     try {
 
       setLoading(true);
+          // 🔥 Purana data clear
+    setOrders([]);
+    setTotalPages(1);
+    setTotalOrders(0);
 
       let url = "";
 
@@ -112,7 +119,10 @@ setTotalPages(res.data.totalPages || 1);
 setTotalOrders(res.data.total || 0);
 
     } catch (err) {
-
+// 🔥 Error par bhi empty rakho
+    setOrders([]);
+    setTotalPages(1);
+    setTotalOrders(0);
       showToast(
         err?.response?.data?.message || "Failed to load orders"
       );
@@ -130,10 +140,20 @@ setTotalOrders(res.data.total || 0);
   // =========================
   const changeStatus = (val) => {
 
-    setStatus(val);
+  // agar same tab par click hua
+  if (status === val) {
+
     setPage(1);
 
-  };
+    // force refresh
+    setRefreshKey(prev => prev + 1);
+
+    return;
+  }
+
+  setStatus(val);
+  setPage(1);
+};
 
   // =========================
   // CHECKBOX

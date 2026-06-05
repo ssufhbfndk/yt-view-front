@@ -345,16 +345,30 @@
 
 .notification-dropdown {
   position: absolute;
-  right: 0;
   top: 35px;
-  width: 280px;
+  right: 0;
+
+  width: 320px;
+  max-width: calc(100vw - 20px);
+
   background: white;
   color: black;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  max-height: 300px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.2);
+
+  max-height: 350px;
   overflow-y: auto;
+
   z-index: 9999;
+}
+
+@media (max-width: 480px) {
+
+  .notification-dropdown {
+    right: -15px;
+    width: 300px;
+  }
+
 }
 
 .notification-item {

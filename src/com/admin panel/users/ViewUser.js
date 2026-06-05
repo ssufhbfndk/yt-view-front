@@ -84,7 +84,10 @@ const [selectedUser, setSelectedUser] = useState(null);
   try {
 
     setLoading(true);
-
+// 🔥 Purana data clear
+    setUsers([]);
+    setTotalPages(1);
+    setTotalUsers(0);
     let url = "";
 
     // 🔍 SEARCH API
@@ -115,7 +118,10 @@ setTotalPages(res.data.totalPages || 1);
 setTotalUsers(res.data.total || 0);
 
   } catch (err) {
-
+// 🔥 Purana data clear
+    setUsers([]);
+    setTotalPages(1);
+    setTotalUsers(0);
     showToast(
       err?.response?.data?.message || "Failed to load users"
     );
@@ -148,11 +154,20 @@ setTotalUsers(res.data.total || 0);
   // =========================
   const changeStatus = (val) => {
 
-    setStatus(val);
+  // 🔥 same tab dobara click
+  if (status === val) {
+
     setPage(1);
 
-  };
+    setRefreshKey(prev => prev + 1);
 
+    return;
+  }
+
+  setStatus(val);
+  setPage(1);
+
+};
   const handleUserUpdate = (updatedUser) => {
 
   setUsers((prev) =>

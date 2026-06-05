@@ -88,6 +88,8 @@
 
   overflow-x: auto;
   scrollbar-width: none;
+  padding-left: 10px;   /* 👈 add */
+ 
 }
 
 /* hide scrollbar (clean UI) */
@@ -245,20 +247,29 @@
     text-align: center;
   }
 
-  .header-right {
-    width: 100%;
-  }
-
+  /* Tabs row */
   .status-tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    overflow: visible;
   }
 
+  /* Tabs */
   .tabs-left {
-    flex-wrap: nowrap;
+    width: 100%;
     overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 5px;
+    padding-left: 20px; 
   }
 
+  .tabs-left::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  /* Search */
   .tabs-right {
     width: 100%;
   }

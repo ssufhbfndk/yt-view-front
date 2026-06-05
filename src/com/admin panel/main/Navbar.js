@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaBars,
@@ -20,16 +20,47 @@ const Navbar = ({ admin, toggleSidebar }) => {
 
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
-
+const [notificationCount, setNotificationCount] = useState(0);
+const [loadingNotifications, setLoadingNotifications] = useState(false);
+const [notificationError, setNotificationError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState(null);
+const notificationRef = useRef(null);
 
+useEffect(() => {
+
+  const handleOutsideClick = (e) => {
+
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(e.target)
+    ) {
+      setOpen(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleOutsideClick);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+  };
+
+}, []);
   // =========================
   // OPEN NOTIFICATION API
   // =========================
   const openNotification = async (notificationId) => {
     try {
+setNotifications(prev =>
+  prev.filter(n => n.id !== notificationId)
+);
 
+setNotificationCount(prev =>
+  Math.max(prev - 1, 0)
+);
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/admin/open-notification`,
         {
@@ -39,10 +70,7 @@ const Navbar = ({ admin, toggleSidebar }) => {
 
       if (res.data.success) {
 
-        // remove from list
-        setNotifications(prev =>
-          prev.filter(n => n.id !== notificationId)
-        );
+        
 
         // set payment detail
         setPaymentDetail(res.data.payment);
@@ -60,36 +88,63 @@ const Navbar = ({ admin, toggleSidebar }) => {
   // LOAD OLD NOTIFICATIONS
   // =========================
   useEffect(() => {
+  const loadCount = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/admin/notification-count`
+      );
+      setNotificationCount(res.data.count || 0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    const fetchNotifications = async () => {
-      try {
+  loadCount();
+}, []);
 
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/admin/notifications`
-        );
-        setNotifications(
-  Array.isArray(res.data)
-    ? res.data
-    : res.data.notifications || []
-);
+const handleNotificationClick = async () => {
 
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  setOpen(!open);
 
-    fetchNotifications();
+  if (open) return;
 
-  }, []);
+  setLoadingNotifications(true);
+  setNotificationError("");
+  setNotifications([]);
 
+  try {
+
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/admin/notifications`
+    );
+
+    setNotifications(
+      Array.isArray(res.data)
+        ? res.data
+        : res.data.notifications || []
+    );
+
+  } catch (err) {
+
+    setNotificationError("Notification load nahi hui");
+
+  } finally {
+
+    setLoadingNotifications(false);
+
+  }
+};
   // =========================
   // SOCKET LISTENER
   // =========================
   useEffect(() => {
 
-    socket.on("admin_notification", (data) => {
-      setNotifications((prev) => [data, ...prev]);
-    });
+    socket.on("admin_notification", () => {
+
+  setNotificationCount(prev => prev + 1);
+
+});
+   
 
     return () => socket.off("admin_notification");
 
@@ -122,28 +177,45 @@ const Navbar = ({ admin, toggleSidebar }) => {
 
             {/* NOTIFICATION */}
             <div
-              className="notification-box"
-              onClick={() => setOpen(!open)}
-            >
+  className="notification-box"
+  ref={notificationRef}
+  onClick={handleNotificationClick}
+>
 
               <FaBell />
 
               {/* COUNT */}
-              {notifications.length > 0 && (
-                <span className="notification-count">
-                  {notifications.length}
-                </span>
-              )}
+              {notificationCount > 0 && (
+  <span className="notification-count">
+    {notificationCount}
+  </span>
+)}
 
               {/* DROPDOWN */}
               {open && (
                 <div className="notification-dropdown">
 
-                  {notifications.length === 0 ? (
-                    <p className="empty">No notifications</p>
-                  ) : (
+                  {loadingNotifications ? (
 
-                    (Array.isArray(notifications) ? notifications : []).map((n) => (
+  <p className="empty">
+    Loading...
+  </p>
+
+) : notificationError ? (
+
+  <p className="empty">
+    {notificationError}
+  </p>
+
+) : notifications.length === 0 ? (
+
+  <p className="empty">
+    No notifications
+  </p>
+
+) : (
+
+                    (Array.isArray(notifications) ? notifications : []).slice(0, 5).map((n) => (
                       <div
                         key={n.id}
                         className="notification-item"
@@ -261,8 +333,14 @@ const Navbar = ({ admin, toggleSidebar }) => {
               </div>
 
               <div className="user-field">
-               <label>
- <FaMoneyBillWave style={{ marginRight: "6px", color: "#16a34a" }} />
+              <label>
+  <FaMoneyBillWave
+    style={{
+      marginRight: "6px",
+      color: "#16a34a"
+    }}
+  />
+  PKR
 </label>
                 <input value={paymentDetail.amount_pkr || ""} disabled />
               </div>

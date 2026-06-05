@@ -47,7 +47,8 @@ const [selectedTransaction, setSelectedTransaction] = useState(null);
   const fetchTransactions = async () => {
   try {
     setTableLoading(true);
-
+setTransactions([]);
+    setTotalPages(1);
     let url = "";
       
     // 👉 IF SEARCH EXISTS → use search API
@@ -72,21 +73,14 @@ const [selectedTransaction, setSelectedTransaction] = useState(null);
     setTotalPages(response.data.totalPages || 1);
 
   } catch (error) {
+    setTransactions([]);
+    setTotalPages(1);
     showToast(error?.response?.data?.message || "Failed to load transactions");
   } finally {
     setTableLoading(false);
   }
 };
-  // =========================
-  // SINGLE CONTROLLED EFFECT
-  // =========================
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      fetchTransactions();
-    }, search ? 500 : 0); // debounce only for search
 
-    return () => clearTimeout(timeout);
-  }, [page, limit, status, search]);
 
   // =========================
   // RESET
@@ -115,9 +109,22 @@ const [selectedTransaction, setSelectedTransaction] = useState(null);
   // STATUS CHANGE
   // =========================
   const changeStatus = (newStatus) => {
-    setStatus(newStatus);
+
+  if (status === newStatus) {
+
+    setTransactions([]);
     setPage(1);
-  };
+
+    setRefreshKey(prev => prev + 1);
+
+    return;
+  }
+
+  setTransactions([]);
+  setStatus(newStatus);
+  setPage(1);
+
+};
 
   return (
     <div className="container-fluid transaction-container mt-4">
