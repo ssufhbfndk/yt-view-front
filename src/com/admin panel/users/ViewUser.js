@@ -112,8 +112,7 @@ const [selectedUser, setSelectedUser] = useState(null);
         search: search || "",
       },
     });
-
-   setUsers(res.data.users || []);
+setUsers(res.data.users || []);
 setTotalPages(res.data.totalPages || 1);
 setTotalUsers(res.data.total || 0);
 
@@ -263,7 +262,14 @@ setTotalUsers(res.data.total || 0);
             >
               Blocked
             </button>
-
+<button
+  className={`tab-btn ${
+    status === "lastactive" ? "active-tab" : ""
+  }`}
+  onClick={() => changeStatus("lastactive")}
+>
+  Last Active
+</button>
           </div>
 
           {/* RIGHT */}
