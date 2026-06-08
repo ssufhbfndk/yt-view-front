@@ -248,34 +248,18 @@ const Navbar = ({ admin, toggleSidebar }) => {
         </div>
       </nav>
 
-      {/* MODAL */}
-      {showModal && paymentDetail && (
-        <div className="user-modal-overlay">
-          <div className="user-modal-container">
-
-            <div className="user-modal-top">
-              <h1>Withdrawal Detail</h1>
-              <button onClick={() => setShowModal(false)}>×</button>
-            </div>
-
-            <div className="user-modal-body">
-              <p>Payment ID: {paymentDetail.id}</p>
-              <p>Username: {paymentDetail.username}</p>
-            </div>
-
-            <div className="user-modal-footer">
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  navigate("/transactions");
-                }}
-              >
-                OK
-              </button>
-            </div>
-
-          </div>
-        </div>
+      {/* ========================= PAYMENT MODAL ========================= */} 
+      {showModal && paymentDetail && ( 
+        <div className="user-modal-overlay"> 
+        <div className="user-modal-container"> 
+          <div className="user-modal-top"> 
+            <div className="user-modal-title d-flex align-items-center gap-2"> 
+              <h1>
+                 <FaBell style={{ marginRight: "8px", color: "#2563eb" }} /> Withdrawal Detail 
+                 </h1> 
+                 <p> 
+                  <FaUserCircle style={{ marginRight: "6px" }} /> Payment Information </p>
+                   </div> <button className="user-close-btn" onClick={() => setShowModal(false)} > × </button> </div> <div className="user-modal-body"> <div className="user-field"> <label> <FaIdCard style={{ marginRight: "6px", color: "#2563eb" }} /> Payment ID </label> <input value={paymentDetail.id || ""} disabled /> </div> <div className="user-field"> <label> <FaUserCircle style={{ marginRight: "6px", color: "#2563eb" }} /> Username </label> <input value={paymentDetail.username || ""} disabled /> </div> <div className="user-field"> <label> <FaUniversity style={{ marginRight: "6px", color: "#2563eb" }} /> Bank Name </label> <input value={paymentDetail.bank_name || ""} disabled /> </div> <div className="user-field"> <label> <FaCreditCard style={{ marginRight: "6px", color: "#2563eb" }} /> Account Holder </label> <input value={paymentDetail.account_holder_name || ""} disabled /> </div> <div className="user-field"> <label> <FaCreditCard style={{ marginRight: "6px", color: "#2563eb" }} /> Account Number </label> <input value={paymentDetail.bank_account_number || ""} disabled /> </div> <div className="user-field"> <label> <FaCoins style={{ marginRight: "6px", color: "#f59e0b" }} /> Coins </label> <input value={paymentDetail.coins || ""} disabled /> </div> <div className="user-field"> <label> <FaMoneyBillWave style={{ marginRight: "6px", color: "#16a34a" }} /> PKR </label> <input value={paymentDetail.amount_pkr || ""} disabled /> </div> </div> <div className="user-modal-footer"> <button className="user-submit-btn" onClick={() => { setShowModal(false); navigate("/transactions"); }} > OK </button> </div> </div> </div>
       )}
 
     </>
