@@ -2,17 +2,19 @@ import { BrowserRouter as Router, Routes, Route, Navigate, } from "react-router-
 import "./styles/custom-scrollbar.css";
 import { AuthProvider } from "./context/AuthContext";
 import { AdminProtectedRoute } from "./routes/ProtectedRoute";
-import AdminLogin from "./com/admin panel/admin login/AdminLogin";
-import Layout from "./com/admin panel/dashboard/Layout"; // Updated to use Layout
-import ViewUser from "./com/admin panel/users/ViewUser";
-import AddUser from "./com/admin panel/users/AddUser";
-import ViewOrder from "./com/admin panel/orders/ViewOrder";
-import AddOrder from "./com/admin panel/orders/AddOrder";
-import AdminProfile from "./com/admin panel/dashboard/AdminProfile"; // Add UpdateProfile component
-import Dashboard from "./com/admin panel/dashboard/Dashboard";
-import Transactions from "./com/admin panel/paymnets/Transactions";
-import NotificationBroadcast from "./com/admin panel/notification/NotificationBroadcast";
-import NotFound from "./com/NotFound";
+import AdminLogin from "./component/admin panel/admin login/AdminLogin";
+import Layout from "./component/admin panel/dashboard/Layout"; // Updated to use Layout
+import ViewUser from "./component/admin panel/users/ViewUser";
+import AddUser from "./component/admin panel/users/AddUser";
+import ViewOrder from "./component/admin panel/orders/ViewOrder";
+import AddOrder from "./component/admin panel/orders/AddOrder";
+import AdminProfile from "./component/admin panel/dashboard/AdminProfile"; // Add UpdateProfile componentponent
+import Dashboard from "./component/admin panel/dashboard/Dashboard";
+import Transactions from "./component/admin panel/paymnets/Transactions";
+import UpdatePaymentManagement from "./component/admin panel/paymnets/UpdatePaymentManagement";
+import ViewPaymentManagement from "./component/admin panel/paymnets/ViewPaymentManagement";
+import NotificationBroadcast from "./component/admin panel/notification/NotificationBroadcast";
+import NotFound from "./component/NotFound";
 import React, { useState, useEffect } from "react";
 function App() {
 
@@ -35,6 +37,8 @@ function App() {
               <Route path="update-profile" element={<AdminProfile />} /> 
               <Route path="transactions" element={<Transactions />} /> 
               <Route path="notifications" element={<NotificationBroadcast/>}/>
+              <Route path="update-payment-management" element={<UpdatePaymentManagement />}/>
+              <Route path="/view-payment-management" element={<ViewPaymentManagement />}/>
               <Route path="*" element={<NotFound/>}/>
             </Route>
           </Route>

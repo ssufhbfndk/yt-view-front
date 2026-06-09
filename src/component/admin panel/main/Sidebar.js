@@ -152,14 +152,59 @@ const Sidebar = ({
             </div>
           </li>
 
-          <li>
-            <Link to="/transactions" onClick={handleNavClick}
-              className={location.pathname === "/transactions" ? "active-link" : ""}
-            >
-              <FaMoneyBillWave />
-              <span>Payments</span>
-            </Link>
-          </li>
+          {/* PAYMENTS */}
+<li className="dropdown-wrapper">
+  <button
+    className={`dropdown-btn ${
+      activeDropdown === "payments"
+        ? "dropdown-active"
+        : ""
+    }`}
+    onClick={() => toggleDropdown("payments")}
+  >
+    <div className="dropdown-left">
+      <FaMoneyBillWave />
+      <span>Payments</span>
+    </div>
+
+    <FaChevronDown
+      className={`dropdown-arrow ${
+        activeDropdown === "payments"
+          ? "rotate"
+          : ""
+      }`}
+    />
+  </button>
+
+  <div
+    className={`dropdown-menu-custom ${
+      activeDropdown === "payments"
+        ? "show-dropdown"
+        : ""
+    }`}
+  >
+    <Link
+      to="/transactions"
+      onClick={handleNavClick}
+    >
+      Transactions
+    </Link>
+
+    <Link
+      to="/update-payment-management"
+      onClick={handleNavClick}
+    >
+      Update Payment Management
+    </Link>
+
+    <Link
+      to="/view-payment-management"
+      onClick={handleNavClick}
+    >
+      View Payment Management
+    </Link>
+  </div>
+</li>
 <li>
   <Link
     to="/notifications"
