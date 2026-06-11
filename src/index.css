@@ -7,16 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 html, body {
-  margin: 0;
-  padding: 0;
+  
   height: 100%;
-  background: #f5f5f5;
   overflow-y: auto;
-  overscroll-behavior: none;
-}
-#root {
-  min-height: 100vh;
-  background: #f5f5f5;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
