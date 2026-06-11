@@ -109,10 +109,9 @@
 .right-navbar {
   display: flex;
   align-items: center;
-
   gap: 16px;
 
-  height: 100%;
+  min-width: 0;
 }
 
 /* ====================================
@@ -121,16 +120,11 @@
 
 .notification-box {
   position: relative;
-
-  color: white;
-  font-size: 18px;
-
-  cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 
 /* RED DOT */
 
@@ -263,12 +257,6 @@
 
   /* RIGHT */
 
-  .right-navbar {
-    gap: 10px;
-
-    display: flex;
-    align-items: center;
-  }
 
   /* NOTIFICATION */
 
@@ -345,28 +333,46 @@
 
 .notification-dropdown {
   position: absolute;
-  top: 35px;
+  top: calc(100% + 12px);
   right: 0;
 
   width: 320px;
-  max-width: calc(100vw - 20px);
+  max-width: calc(100vw - 24px);
 
-  background: white;
-  color: black;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.2);
+  background: #fff;
+  color: #000;
+
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 
   max-height: 350px;
   overflow-y: auto;
+  overflow-x: hidden;
 
   z-index: 9999;
 }
 
-@media (max-width: 480px) {
+/* Laptop / Tablet Fix */
+@media (max-width: 992px) {
+  .notification-dropdown {
+    right: -20px;
+  }
+}
+
+/* Mobile Fix */
+@media (max-width: 576px) {
 
   .notification-dropdown {
-    right: -15px;
-    width: 300px;
+    position: fixed;
+
+    top: 65px;
+    left: 12px;
+    right: 12px;
+
+    width: auto;
+    max-width: none;
+
+    transform: none;
   }
 
 }
