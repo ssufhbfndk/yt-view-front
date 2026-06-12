@@ -27,7 +27,10 @@ function App() {
   };
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
+    <PullToRefresh onRefresh={handleRefresh} style={{
+    minHeight: "100vh",
+    background: "#f5f5f5"
+  }}>
       <Router>
         <AuthProvider>
           <Routes>
