@@ -18,3 +18,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* Pull To Refresh Fix */
+
+.ptr {
+  background: transparent !important;
+}
+
+.ptr--ptr {
+  background: transparent !important;
+}
+
+.ptr-reset,
+.ptr-refresh {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Agar top spacing aa rahi ho */
+.ptr-element {
+  background: transparent !important;
+}
