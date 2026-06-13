@@ -4,7 +4,7 @@ import { useAuth } from "../../../context/AuthContext";
 import Sidebar from "../main/Sidebar";
 import Navbar from "../main/Navbar";
 import "./Layout.css";
-
+import PullToRefresh from "pulltorefreshjs";
 const Layout = () => {
   const { admin, adminLogout } = useAuth();
   const navigate = useNavigate();
@@ -18,7 +18,31 @@ const Layout = () => {
   useEffect(() => {
   // no loading bar
 }, [location.pathname]);
+ useEffect(() => {
 
+PullToRefresh.init({
+  mainElement: ".content-area",
+
+  onRefresh() {
+    window.location.reload();
+  },
+
+  shouldPullToRefresh: () => {
+    const el = document.querySelector(".content-area");
+
+    return (
+      el &&
+      el.scrollTop <= 0
+    );
+  },
+
+  distThreshold: 80,
+  distMax: 100,
+});
+   
+return () => PullToRefresh.destroyAll();
+
+  }, []);
   // =========================
   // LOGOUT
   // =========================

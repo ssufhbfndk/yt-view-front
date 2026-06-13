@@ -58,7 +58,7 @@ const ViewPaymentManagement = () => {
     </div>
   );
 
-const totalPayments = Number(data?.monthPayments || 0);
+const totalPayments = Number(data?.completedPayments || 0);
 
 const remaining =
   (Number(data?.adminBalance || 0)) - totalPayments;

@@ -127,3 +127,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+
+.ptr--ptr,
+.ptr--box,
+.ptr--text {
+  display: none !important;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
