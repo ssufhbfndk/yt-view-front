@@ -1,40 +1,24 @@
-body {
-   margin: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 html,
 body,
 #root {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: #f5f5f5;
 }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Native browser pull-to-refresh ke liye */
+  overflow-y: auto;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-/* Pull To Refresh Fix */
-
-.ptr {
-  background: transparent !important;
-}
-
-.ptr--ptr {
-  background: transparent !important;
-}
-
-.ptr-reset,
-.ptr-refresh {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Agar top spacing aa rahi ho */
-.ptr-element {
-  background: transparent !important;
 }
