@@ -17,20 +17,13 @@ import NotificationBroadcast from "./component/admin panel/notification/Notifica
 import NotFound from "./component/NotFound";
 import React from "react";
 
-import PullToRefresh from "react-pull-to-refresh";
+
 
 function App() {
 
-  // 🔥 Pull to refresh action (full site reload)
-  const handleRefresh = async () => {
-    window.location.reload();
-  };
 
   return (
-    <PullToRefresh onRefresh={handleRefresh} style={{
-    minHeight: "100vh",
-    background: "#f5f5f5"
-  }}>
+   
       <Router>
         <AuthProvider>
           <Routes>
@@ -59,7 +52,7 @@ function App() {
           </Routes>
         </AuthProvider>
       </Router>
-    </PullToRefresh>
+    
   );
 }
 
