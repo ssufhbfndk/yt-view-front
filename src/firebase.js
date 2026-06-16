@@ -1,5 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp, getApps } from "firebase/app";
 import {
   getMessaging,
   getToken,
@@ -16,30 +15,45 @@ const firebaseConfig = {
   measurementId: "G-CXNDNZGSFR"
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// SAFE INIT (important fix)
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+
 export const messaging = getMessaging(app);
 
+// =========================
+// REQUEST PERMISSION + TOKEN
+// =========================
 export const requestNotificationPermission = async () => {
 
-  const permission =
-    await Notification.requestPermission();
+  try {
 
-  if (permission !== "granted") {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      console.log("Notification permission denied");
+      return null;
+    }
+
+    const token = await getToken(messaging, {
+      vapidKey: "BGawA6PR7reOitBVg6dIAi9-PZNDv7ju44wDTOys0VwLVrEL9nIPu4bGKFnbGH5ylWsC0qSQPI9Y0oUoQabzD8s"
+    });
+
+    return token;
+
+  } catch (error) {
+    console.error("FCM Token Error:", error);
     return null;
   }
-
-  const token = await getToken(messaging, {
-    vapidKey: "BGawA6PR7reOitBVg6dIAi9-PZNDv7ju44wDTOys0VwLVrEL9nIPu4bGKFnbGH5ylWsC0qSQPI9Y0oUoQabzD8s"
-  });
-
-  return token;
 };
 
-export const listenForegroundNotification =
-  (callback) => {
+// =========================
+// FOREGROUND NOTIFICATION
+// =========================
+export const listenForegroundNotification = (callback) => {
 
-    onMessage(messaging, payload => {
-      callback(payload);
-    });
+  onMessage(messaging, (payload) => {
+    console.log("Foreground message:", payload);
+    callback(payload);
+  });
+
 };

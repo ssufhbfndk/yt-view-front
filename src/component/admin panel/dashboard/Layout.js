@@ -61,7 +61,6 @@ const Layout = () => {
       try {
 
         const token = await requestNotificationPermission();
-
         if (!token) return;
 
         // avoid duplicate API calls
@@ -69,9 +68,9 @@ const Layout = () => {
 
         if (savedToken === token) return;
 
-        await axios.post("/api/admin/save-web-token", {
+        await axios.post(`${process.env.REACT_APP_API_URL}/admin/save-web-token`, {
           adminId: admin.id,
-          token: token
+          token: token 
         });
 
         localStorage.setItem("fcm_token", token);
