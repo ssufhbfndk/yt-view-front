@@ -54,38 +54,62 @@ const Layout = () => {
   // =========================
   useEffect(() => {
 
-    if (!admin?.id) return;
+  if (!admin?.id) return;
 
-    const initFCM = async () => {
+  const initFCM = async () => {
 
-      try {
+    try {
 
-        const token = await requestNotificationPermission();
-        if (!token) return;
+      const token = await requestNotificationPermission();
 
-        // avoid duplicate API calls
-        const savedToken = localStorage.getItem("fcm_token");
+      if (!token) return;
 
-        if (savedToken === token) return;
+      const oldToken =
+        localStorage.getItem("fcm_token");
 
-        await axios.post(`${process.env.REACT_APP_API_URL}/admin/save-web-token`, {
-          adminId: admin.id,
-          token: token 
-        });
-
-        localStorage.setItem("fcm_token", token);
-
-        console.log("FCM Token Saved:", token);
-
-      } catch (error) {
-        console.error("FCM Error:", error);
+      if (oldToken === token) {
+        return;
       }
 
-    };
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/admin/save-web-token`,
+        {
+          adminId: admin.id,
+          oldToken,
+          newToken: token
+        }
+      );
 
-    initFCM();
+      if (response.data.success) {
 
-  }, [admin?.id]);
+        localStorage.removeItem("fcm_token");
+
+        localStorage.setItem(
+          "fcm_token",
+          token
+        );
+
+      }
+
+      console.log(
+        "FCM Token Saved:",
+        token
+      );
+
+    } catch (error) {
+
+      console.error(
+        "FCM Error:",
+        error
+      );
+
+    }
+
+  };
+
+  initFCM();
+
+}, [admin?.id]);
 
   // =========================
   // LOGOUT
