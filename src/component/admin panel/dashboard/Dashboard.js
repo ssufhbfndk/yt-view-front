@@ -20,31 +20,62 @@ const Dashboard = () => {
     completedOrders: 0,
     totalRevenue: 0,
   });
-
+const [serverStatus, setServerStatus] = useState("Checking...");
+const [dbStatus, setDbStatus] = useState("Checking...");
+const [apiSpeed, setApiSpeed] = useState("Checking...");
+const [refreshing, setRefreshing] = useState(false);
   // =========================
   // FETCH DASHBOARD DATA
   // =========================
   const fetchDashboard = async () => {
-    try {
 
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/dashboard/stats`
-      );
+  setRefreshing(true);
 
-      setStats({
-        activeUsers: response.data.activeUsers || 0,
-        pendingOrders: response.data.pendingOrders || 0,
-        completedOrders: response.data.completedOrders || 0,
-        totalRevenue: response.data.totalRevenue || 0,
-      });
+  const startTime = Date.now();
 
-    } catch (error) {
-      console.log("Dashboard API Error", error);
-    } finally {
-      setLoading(false);
+  try {
+
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/dashboard/stats`
+    );
+
+    const responseTime = Date.now() - startTime;
+
+    setStats({
+      activeUsers: response.data.activeUsers || 0,
+      pendingOrders: response.data.pendingOrders || 0,
+      completedOrders: response.data.completedOrders || 0,
+      totalRevenue: response.data.totalRevenue || 0,
+    });
+
+    // Server aur DB dono theek hain
+    setServerStatus("Online");
+    setDbStatus("Connected");
+
+    // API Speed
+    if (responseTime < 500) {
+      setApiSpeed("Fast");
+    } else if (responseTime < 1500) {
+      setApiSpeed("Normal");
+    } else {
+      setApiSpeed("Slow");
     }
-  };
 
+  } catch (error) {
+
+    console.log("Dashboard API Error", error);
+
+    setServerStatus("Offline");
+    setDbStatus("Disconnected");
+    setApiSpeed("No Response");
+
+  } finally {
+
+    setLoading(false);
+    setRefreshing(false);
+
+  }
+};
   // =========================
   // AUTO REFRESH EVERY 1 MIN
   // =========================
@@ -77,12 +108,14 @@ const Dashboard = () => {
   </div>
 
   <button
-    className="refresh-btn"
-    onClick={fetchDashboard}
-  >
-    <ArrowRepeat size={16} />
-    Refresh
-  </button>
+  className="refresh-btn"
+  onClick={fetchDashboard}
+  disabled={refreshing}
+>
+  <ArrowRepeat size={16} />
+
+  {refreshing ? " Loading..." : " Refresh"}
+</button>
 
 </div>
 
@@ -203,30 +236,27 @@ const Dashboard = () => {
 
             <div className="col-md-4 mb-3">
               <div className="mini-box">
-                <span>🟢 Server Status</span>
-                <strong>Online</strong>
-              </div>
-            </div>
+                 <span>🟢 Server Status</span>
+              <strong>{serverStatus}</strong>
+                </div>
+                  </div>
 
-            <div className="col-md-4 mb-3">
-              <div className="mini-box">
-                <span>⚡ API Response</span>
-                <strong>Fast</strong>
-              </div>
-            </div>
+<div className="col-md-4 mb-3">
+  <div className="mini-box">
+    <span>⚡ API Response</span>
+    <strong>{apiSpeed}</strong>
+  </div>
+</div>
 
-            <div className="col-md-4 mb-3">
-              <div className="mini-box">
-                <span>📦 Database</span>
-                <strong>Connected</strong>
-              </div>
-            </div>
-
-          </div>
-
+<div className="col-md-4 mb-3">
+  <div className="mini-box">
+    <span>📦 Database</span>
+    <strong>{dbStatus}</strong>
+  </div>
+        </div>   
         </div>
-      </div>
-
+        </div>
+    </div>
     </div>
   );
 };
