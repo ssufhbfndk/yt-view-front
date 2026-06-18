@@ -23,7 +23,6 @@ const Layout = () => {
     // optional logic
   }, [location.pathname]);
 
-  // =========================
   // PULL TO REFRESH
   // =========================
  
