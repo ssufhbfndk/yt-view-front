@@ -71,13 +71,14 @@ body {
 ========================= */
 
 .content-area {
-    flex-grow: 1;
-    padding: 24px;
+    flex: 1;
     margin-left: 250px;
     margin-top: 60px;
+    padding: 24px;
     background: #f4f6fb;
+    width: calc(100% - 250px);
+    box-sizing: border-box;
 }
-
 /* =========================
    MOBILE RESPONSIVE
 ========================= */
@@ -92,9 +93,11 @@ body {
         transform: translateX(0);
     }
 
-    .content-area {
+  .content-area {
         margin-left: 0;
+        width: 100%;
         padding: 18px;
+        box-sizing: border-box;
     }
 
     /* optional overlay feel */
