@@ -4,7 +4,6 @@ import { useAuth } from "../../../context/AuthContext";
 import Sidebar from "../main/Sidebar";
 import Navbar from "../main/Navbar";
 import "./Layout.css";
-import PullToRefresh from "pulltorefreshjs";
 import axios from "axios";
 
 import { requestNotificationPermission } from "../../../firebase";
@@ -27,28 +26,7 @@ const Layout = () => {
   // =========================
   // PULL TO REFRESH
   // =========================
-  useEffect(() => {
-
-    PullToRefresh.init({
-      mainElement: ".content-area",
-
-      onRefresh() {
-        window.location.reload();
-      },
-
-      shouldPullToRefresh: () => {
-        const el = document.querySelector(".content-area");
-        return el && el.scrollTop <= 0;
-      },
-
-      distThreshold: 80,
-      distMax: 100,
-    });
-
-    return () => PullToRefresh.destroyAll();
-
-  }, []);
-
+ 
   // =========================
   // FCM TOKEN REGISTER (BEST WAY)
   // =========================

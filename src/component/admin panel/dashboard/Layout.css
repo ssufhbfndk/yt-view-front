@@ -1,11 +1,15 @@
+html,
+body {
+    min-height: 100%;
+    overflow-y: auto;
+}
 /* =========================
    LAYOUT CONTAINER
 ========================= */
 
 .layout-container {
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     background: #f4f6fb;
     font-family: "Segoe UI", sans-serif;
 }
@@ -68,17 +72,10 @@
 
 .content-area {
     flex-grow: 1;
-
     padding: 24px;
-
     margin-left: 250px;
     margin-top: 60px;
-
     background: #f4f6fb;
-
-    overflow-y: auto;
-
-    transition: margin-left 0.3s ease;
 }
 
 /* =========================
