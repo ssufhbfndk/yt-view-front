@@ -27,7 +27,9 @@ const ViewPaymentManagement = () => {
       setError(false);
 
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/payment/view-payment-management`
+        `${process.env.REACT_APP_API_URL}/payment/view-payment-management`,{
+    withCredentials: true, // 🔐 IMPORTANT
+  }
       );
 
       setData(res.data);

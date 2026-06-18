@@ -118,7 +118,9 @@ const NotificationBroadcast = () => {
             title: title.trim(),
             body: body.trim(),
             link: finalLink
-          }
+          },{
+    withCredentials: true, // 🔐 IMPORTANT
+  }
 
         );
 

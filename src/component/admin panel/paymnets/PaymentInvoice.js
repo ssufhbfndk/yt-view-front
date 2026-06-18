@@ -30,18 +30,16 @@ const [toast, setToast] = useState({
   message: "",
   type: "success",
 });
-  useEffect(() => {
 
-    if (transaction) {
+const currentStatus = transaction ? String(transaction.status) : "";
 
-      setStatus(String(transaction.status));
 
-      setInvoiceNumber(
-        transaction.invoice_num || ""
-      );
-    }
+ useEffect(() => {
+  if (!transaction) return;
 
-  }, [transaction]);
+  setStatus(String(transaction?.status || ""));
+  setInvoiceNumber(transaction?.invoice_num || "");
+}, [transaction]);
 
   if (!show || !transaction) return null;
 
@@ -57,6 +55,21 @@ const [toast, setToast] = useState({
   }, 3000);
 };
 
+//BLOCK INVALID CHANGES
+const isInvalidTransition = () => {
+  // completed or rejected is LOCKED
+  if (currentStatus === "1" || currentStatus === "2") {
+    return true;
+  }
+
+  // same status update useless
+  if (currentStatus === status) {
+    return true;
+  }
+
+  return false;
+};
+
   // SUBMIT API
   const submitUpdate = async () => {
 
@@ -65,16 +78,16 @@ const [toast, setToast] = useState({
       setLoading(true);
 
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/payment/update-transaction-status`,
-        {
-          transaction_id: transaction.id,
-          status,
-          invoice_number:
-            status === "1"
-              ? invoiceNumber
-              : "",
-        }
-      );
+  `${process.env.REACT_APP_API_URL}/payment/update-transaction-status`,
+  {
+    transaction_id: transaction.id,
+    status,
+    invoice_number: status === "1" ? invoiceNumber : "",
+  },
+  {
+    withCredentials: true, // 🔐 IMPORTANT
+  }
+);
 
     showToast(response.data.message || "Updated Successfully", "success");
 
@@ -105,20 +118,19 @@ onClose();
   };
 
   // BUTTON CLICK
-  const handleSubmit = () => {
+const handleSubmit = () => {
+  if (isInvalidTransition()) {
+    showToast("This transaction is locked and cannot be updated", "error");
+    return;
+  }
 
-    if (
-      status === "1" &&
-      invoiceNumber.trim() === ""
-    ) {
+  if (status === "1" && invoiceNumber.trim() === "") {
+    showToast("Invoice Number Required", "error");
+    return;
+  }
 
-     showToast("Invoice Number Required", "error");
-
-      return;
-    }
-
-    setShowAlert(true);
-  };
+  setShowAlert(true);
+};
 
   return (
 

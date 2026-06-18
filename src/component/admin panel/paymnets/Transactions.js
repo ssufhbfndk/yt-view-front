@@ -50,7 +50,6 @@ const [selectedTransaction, setSelectedTransaction] = useState(null);
 setTransactions([]);
     setTotalPages(1);
     let url = "";
-      
     // 👉 IF SEARCH EXISTS → use search API
     if (search && search.trim() !== "") {
       url = `${process.env.REACT_APP_API_URL}/payment/transactions-search`;
@@ -60,14 +59,15 @@ setTransactions([]);
       url = `${process.env.REACT_APP_API_URL}/payment/transactions-view`;
     }
 
-    const response = await axios.get(url, {
-      params: {
-        page,
-        limit,
-        search: search || "",
-        status,
-      },
-    });
+  const response = await axios.get(url, {
+  params: {
+    page,
+    limit,
+    search: search || "",
+    status,
+  },
+  withCredentials: true, // 🔐 IMPORTANT
+});
 
     setTransactions(response.data.transactions || []);
     setTotalPages(response.data.totalPages || 1);

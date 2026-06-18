@@ -36,7 +36,9 @@ const [error, setError] = useState(false);
     setError(false);
 
     const res = await axios.get(
-      `${process.env.REACT_APP_API_URL}/payment/payment-management`
+      `${process.env.REACT_APP_API_URL}/payment/payment-management`,{
+    withCredentials: true, // 🔐 IMPORTANT
+  }
     );
 
     setAdminDebit(res.data.adminDebit || "");
@@ -69,7 +71,9 @@ const [error, setError] = useState(false);
         {
           type: modal.type,
           value: modal.value,
-        }
+        },{
+    withCredentials: true, // 🔐 IMPORTANT
+  }
       );
 
       showToast("success", "Updated Successfully");

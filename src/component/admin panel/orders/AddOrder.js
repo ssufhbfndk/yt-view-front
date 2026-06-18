@@ -47,7 +47,9 @@ if (singleLoading) return;
 
   const res = await axios.post(
     `${process.env.REACT_APP_API_URL}/orders/single-order`,
-    { orderId, videoLink, quantity, seconds }
+    { orderId, videoLink, quantity, seconds },{
+    withCredentials: true, // 🔐 IMPORTANT
+  }
   );
 
   showToast("success", res.data.message || "Order created");
@@ -106,7 +108,9 @@ if (multiLoading) return;
 
   const res = await axios.post(
     `${process.env.REACT_APP_API_URL}/orders/multi-orders`,
-    { orders }
+    { orders },{
+    withCredentials: true, // 🔐 IMPORTANT
+  }
   );
 
   showToast("success", "Multi orders created");

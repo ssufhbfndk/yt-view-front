@@ -23,9 +23,6 @@ const Layout = () => {
     // optional logic
   }, [location.pathname]);
 
-  // PULL TO REFRESH
-  // =========================
- 
   // =========================
   // FCM TOKEN REGISTER (BEST WAY)
   // =========================

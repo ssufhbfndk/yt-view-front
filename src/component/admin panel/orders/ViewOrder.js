@@ -112,7 +112,12 @@ const totalRemaining = selectedOrders.reduce(
           status,
           search,
         },
-      });
+      },
+      {
+    withCredentials: true, // 🔐 IMPORTANT
+  }
+      
+    );
 
      setOrders(res.data.orders || []);
 setTotalPages(res.data.totalPages || 1);
@@ -224,7 +229,10 @@ const handleRowDelete = (order) => {
       `${process.env.REACT_APP_API_URL}/orders/delete-multiple`,
       {
         orders: ordersToDelete
-      }
+      },
+      {
+    withCredentials: true, // 🔐 IMPORTANT
+  }
     );
 
     showToast(
