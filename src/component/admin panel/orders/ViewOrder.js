@@ -112,10 +112,8 @@ const totalRemaining = selectedOrders.reduce(
           status,
           search,
         },
+        withCredentials: true, // 🔐 IMPORTANT
       },
-      {
-    withCredentials: true, // 🔐 IMPORTANT
-  }
       
     );
 
@@ -519,7 +517,7 @@ const handleRowDelete = (order) => {
                   <tr>
 
                     <td
-                      colSpan="9"
+                      colSpan="10"
                       className="text-center py-5"
                     >
 
@@ -629,7 +627,7 @@ const handleRowDelete = (order) => {
                   <tr>
 
                     <td
-                      colSpan="9"
+                      colSpan="10"
                       className="text-center py-5 fw-semibold"
                     >
                       No Orders Found
