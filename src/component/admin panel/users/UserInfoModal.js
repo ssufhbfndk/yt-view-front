@@ -79,6 +79,9 @@ const UserInfoModal = ({
           user_id: user.id,
           number: mobile,
           status,
+        },
+        {
+         withCredentials: true, // 🔐 IMPORTANT
         }
       );
 

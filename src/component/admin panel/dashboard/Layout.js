@@ -46,11 +46,13 @@ const Layout = () => {
       }
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/save-web-token`,
+        `${process.env.REACT_APP_API_URL}/adminNotification/save-web-token`,
         {
           adminId: admin.id,
           oldToken,
           newToken: token
+        },{
+         withCredentials: true, // 🔐 IMPORTANT
         }
       );
 

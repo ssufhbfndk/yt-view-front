@@ -54,7 +54,9 @@ const Navbar = ({ admin, toggleSidebar }) => {
   const syncNotifications = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/notification-count`
+        `${process.env.REACT_APP_API_URL}/adminNotification/notification-count`,{
+         withCredentials: true, // 🔐 IMPORTANT
+        }
       );
       setNotificationCount(res.data.count || 0);
     } catch (err) {
@@ -114,8 +116,10 @@ const Navbar = ({ admin, toggleSidebar }) => {
   const openNotification = async (notificationId) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/open-notification`,
-        { notification_id: notificationId }
+        `${process.env.REACT_APP_API_URL}/adminNotification/open-notification`,
+        { notification_id: notificationId },{
+         withCredentials: true, // 🔐 IMPORTANT
+        }
       );
 
       if (res.data.success) {
@@ -151,7 +155,9 @@ const Navbar = ({ admin, toggleSidebar }) => {
 
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/notifications`
+        `${process.env.REACT_APP_API_URL}/adminNotification/notifications`,{
+         withCredentials: true, // 🔐 IMPORTANT
+        }
       );
 
       setNotifications(

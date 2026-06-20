@@ -111,6 +111,7 @@ const [selectedUser, setSelectedUser] = useState(null);
         status,
         search: search || "",
       },
+       withCredentials: true, // 🔐 IMPORTANT
     });
 setUsers(res.data.users || []);
 setTotalPages(res.data.totalPages || 1);

@@ -36,7 +36,9 @@ const [refreshing, setRefreshing] = useState(false);
   try {
 
     const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/dashboard/stats`
+      `${process.env.REACT_APP_API_URL}/dashboard/stats`,{
+         withCredentials: true, // 🔐 IMPORTANT
+        }
     );
 
     const responseTime = Date.now() - startTime;
