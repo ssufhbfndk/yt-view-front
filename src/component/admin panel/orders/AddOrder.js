@@ -11,7 +11,13 @@ const [multiLoading, setMultiLoading] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [quantity, setQuantity] = useState("");
   const [seconds, setSeconds] = useState("");
+//demo order
+const [demoLoading, setDemoLoading] = useState(false);
 
+const [demoOrderId, setDemoOrderId] = useState("");
+const [demoVideoLink, setDemoVideoLink] = useState("");
+const [demoQuantity, setDemoQuantity] = useState("");
+const [demoSeconds, setDemoSeconds] = useState("");
   // MULTI ORDER
   const [multiText, setMultiText] = useState("");
 
@@ -69,7 +75,56 @@ if (singleLoading) return;
 
 }
   };
+// =========================
+  // demo ORDER API
+  // =========================
 
+  const handleDemoSubmit = async (e) => {
+  e.preventDefault();
+
+  if (demoLoading) return;
+
+  if (
+    !demoOrderId ||
+    !demoVideoLink ||
+    !demoQuantity ||
+    !demoSeconds
+  ) {
+    showToast("error", "All fields are required");
+    return;
+  }
+
+  try {
+    setDemoLoading(true);
+
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/orders/demo-order`,
+      {
+        orderId: demoOrderId,
+        videoLink: demoVideoLink,
+        quantity: demoQuantity,
+        seconds: demoSeconds,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    showToast(
+      "success",
+      res.data.message || "Demo Order Created"
+    );
+
+    setDemoOrderId("");
+    setDemoVideoLink("");
+    setDemoQuantity("");
+    setDemoSeconds("");
+  } catch (err) {
+    showToast("error", "Demo order failed");
+  } finally {
+    setDemoLoading(false);
+  }
+};
   // =========================
   // MULTI ORDER API
   // =========================
@@ -157,6 +212,12 @@ if (multiLoading) return;
           >
             Multi Order
           </button>
+          <button
+  className={tab === "demo" ? "active" : ""}
+  onClick={() => setTab("demo")}
+>
+  Demo Order
+</button>
         </div>
 
         {/* SINGLE FORM */}
@@ -222,6 +283,45 @@ orderId,videoLink,quantity,seconds`}
           </form>
         )}
 
+        {/* demo from*/}
+{tab === "demo" && (
+  <form onSubmit={handleDemoSubmit} className="order-form">
+
+    <input
+      placeholder="Order ID"
+      value={demoOrderId}
+      onChange={(e) => setDemoOrderId(e.target.value)}
+    />
+
+    <input
+      placeholder="YouTube Link"
+      value={demoVideoLink}
+      onChange={(e) => setDemoVideoLink(e.target.value)}
+    />
+
+    <input
+      placeholder="Quantity"
+      value={demoQuantity}
+      onChange={(e) => setDemoQuantity(e.target.value)}
+    />
+
+    <input
+      placeholder="Seconds"
+      value={demoSeconds}
+      onChange={(e) => setDemoSeconds(e.target.value)}
+    />
+
+    <button
+      type="submit"
+      disabled={demoLoading}
+    >
+      {demoLoading
+        ? "Creating..."
+        : "Create Demo Order"}
+    </button>
+
+  </form>
+)}
       </div>
     </div>
   );

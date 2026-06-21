@@ -176,6 +176,73 @@ const absValue = Math.abs(remaining);
 
         </div>
 
+        {/* YEAR */}
+<div className="payment-card-item">
+
+  <div className="card-top">
+
+    <FaCalendarDays className="card-icon green" />
+
+    <span>Last 365 Days</span>
+
+  </div>
+
+  <h3>
+    Rs. {formatAmount(data.yearPayments)}
+  </h3>
+
+  <p>Yearly Payments</p>
+
+</div>
+ {/* total payment */}
+
+<div className="payment-card-item">
+
+  <div className="card-top">
+
+    <FaMoneyBillWave className="card-icon orange" />
+
+    <span>Total Payments</span>
+
+  </div>
+
+  <h3>
+    Rs. {formatAmount(data.completedPayments)}
+  </h3>
+
+  <p>All Payment Records</p>
+
+</div>
+ {/* STATUS */}
+        <div
+          className={`payment-card-item ${
+            isCredit
+              ? "status-credit"
+              : "status-debit"
+          }`}
+        >
+
+          <div className="card-top">
+
+            {isCredit ? (
+              <FaArrowTrendUp className="card-icon" />
+            ) : (
+              <FaArrowTrendDown className="card-icon" />
+            )}
+
+            <span>Payment Status</span>
+
+          </div>
+
+          <h3>
+            {isCredit ? "CREDIT" : "DEBIT"}
+          </h3>
+
+          <p>
+  Rs. {formatAmount(absValue)}
+</p>
+
+        </div>
         {/* ADMIN BALANCE */}
         <div className="payment-card-item">
 
@@ -214,36 +281,7 @@ const absValue = Math.abs(remaining);
 
         </div>
 
-        {/* STATUS */}
-        <div
-          className={`payment-card-item ${
-            isCredit
-              ? "status-credit"
-              : "status-debit"
-          }`}
-        >
-
-          <div className="card-top">
-
-            {isCredit ? (
-              <FaArrowTrendUp className="card-icon" />
-            ) : (
-              <FaArrowTrendDown className="card-icon" />
-            )}
-
-            <span>Payment Status</span>
-
-          </div>
-
-          <h3>
-            {isCredit ? "CREDIT" : "DEBIT"}
-          </h3>
-
-          <p>
-  Rs. {formatAmount(absValue)}
-</p>
-
-        </div>
+       
     </>
 
   )}

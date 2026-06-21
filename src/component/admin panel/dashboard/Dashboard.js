@@ -24,6 +24,26 @@ const [serverStatus, setServerStatus] = useState("Checking...");
 const [dbStatus, setDbStatus] = useState("Checking...");
 const [apiSpeed, setApiSpeed] = useState("Checking...");
 const [refreshing, setRefreshing] = useState(false);
+
+
+
+const formatNumber = (num) => {
+  if (!num) return "0";
+
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(1).replace(".0", "") + "B";
+  }
+
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace(".0", "") + "M";
+  }
+
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(".0", "") + "K";
+  }
+
+  return num.toString();
+};
   // =========================
   // FETCH DASHBOARD DATA
   // =========================
@@ -213,7 +233,7 @@ const [refreshing, setRefreshing] = useState(false);
               {loading ? (
                 <div className="spinner-border spinner-border-sm"></div>
               ) : (
-                <h2>Rs {stats.totalRevenue}</h2>
+                <h2>Rs {formatNumber(stats.totalRevenue)}</h2>
               )}
 
               <p className="text-muted mb-0">
